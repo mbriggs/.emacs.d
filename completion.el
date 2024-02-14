@@ -5,7 +5,7 @@
 ;;; Completion
 
 (setopt enable-recursive-minibuffers t)                ; Use the minibuffer whilst in the minibuffer
-(setopt completion-cycle-threshold 3)                  ; TAB cycles candidates
+(setopt completion-cycle-threshold 1)                  ; TAB cycles candidates
 (setopt completions-detailed t)                        ; Show annotations
 (setopt tab-always-indent 'complete)                   ; When I hit TAB, try to complete, otherwise, indent
 (setopt completion-styles '(basic initials substring)) ; Different styles to match input to candidates
