@@ -98,6 +98,9 @@
 ;; Fix archaic defaults
 (setopt sentence-end-double-space nil)
 
+;; Repeat common things
+(repeat-mode)
+
 ;; Make right-click do something sensible
 (when (display-graphic-p)
   (context-menu-mode))
