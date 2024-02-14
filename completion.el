@@ -34,6 +34,7 @@
 (use-package vertico
   :ensure t
   :init
+  (setq vertico-count 20)
   (vertico-mode))
 
 
