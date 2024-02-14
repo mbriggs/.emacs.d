@@ -161,6 +161,9 @@ If the new path's directories does not exist, create them."
 
 (load-file (expand-file-name "binding.el" user-emacs-directory))
 
+;; Modes for languages not bundled
+
+(load-file (expand-file-name "lang.el" user-emacs-directory))
 
 ;;; Tab bar
 ;; Show the tab-bar as soon as tab-bar functions are invoked
