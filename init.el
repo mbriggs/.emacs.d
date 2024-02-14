@@ -119,9 +119,6 @@ If the new path's directories does not exist, create them."
 (setopt make-backup-file-name-function 'mb--backup-file-name)
 
 
-;; treat symbols like foo_bar as part of the word
-(global-superword-mode)
-
 ;;; Git
 
 (use-package magit
