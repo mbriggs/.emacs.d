@@ -1,5 +1,11 @@
 - Copilot
 - Editorconfig
+- Treesitter set up
+ - ruby
+ - typescript
+ - web
+ - javascript
+ - golang
 - Eglot
  - working with corfu
  - ruby
@@ -8,3 +14,4 @@
  - golang
  - web?
 - Linting (with eglot?)
+- GPTel
