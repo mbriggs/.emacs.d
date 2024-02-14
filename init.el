@@ -14,6 +14,10 @@
 
 ;;; UI
 
+;; stop the beeping
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+
 ;; Mode line information
 (setopt line-number-mode t)                        ; Show current line in modeline
 (setopt column-number-mode t)                      ; Show column as well
