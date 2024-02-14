@@ -1,0 +1,10 @@
+- Copilot
+- Editorconfig
+- Eglot
+ - working with corfu
+ - ruby
+ - typescript
+ - javascript
+ - golang
+ - web?
+- Linting (with eglot?)
