@@ -15,3 +15,4 @@
  - web?
 - Linting (with eglot?)
 - GPTel
+- Bring back my quotes in scratch buffer
