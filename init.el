@@ -157,6 +157,10 @@ If the new path's directories does not exist, create them."
 
 (load-file (expand-file-name "completion.el" user-emacs-directory))
 
+;; Global key bindings
+
+(load-file (expand-file-name "binding.el" user-emacs-directory))
+
 ;;; LSP
 (use-package eglot
   ;; Configure hooks to automatically turn-on eglot for selected modes
