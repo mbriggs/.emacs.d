@@ -128,6 +128,27 @@ If the new path's directories does not exist, create them."
   :ensure t
   :bind (("C-x g" . magit-status)))
 
+(use-package git-gutter
+  :ensure t
+  :requires (git-gutter-fringe fringe-helper)
+  :config
+  (require 'git-gutter-fringe)
+  (require 'git-gutter)
+  (if (fboundp 'fringe-mode) (fringe-mode '4))
+
+  ;; places the git gutter outside the margins.
+  (setq-default fringes-outside-margins t)
+  ;; thin fringe bitmaps
+  (define-fringe-bitmap 'git-gutter-fr:added [224]
+    nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224]
+    nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+    nil nil 'bottom)
+  (global-git-gutter-mode))
+  
+  
+
 ;;; Editable grep buffers
 (use-package wgrep
   :ensure t)
