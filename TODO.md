@@ -9,3 +9,8 @@
 - GPTel
 - Bring back my quotes in scratch buffer
 - store autosave in emacs dir
+- Projects
+- learn smerge
+ - change comparison highlighting
+ - how to resolve
+ - change prefix
