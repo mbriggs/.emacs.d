@@ -181,6 +181,34 @@ If the new path's directories does not exist, create them."
   )
 
 
+;;; Copilot
+(use-package copilot
+  :after (editorconfig dash s jsonrpc)
+  :load-path ".copilot"
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+	      ("M-;" . copilot-accept-completion))
+  :config
+  (add-to-list 'copilot-indentation-alist
+	       '(lisp-interaction-mode . (lambda () (current-column)))
+	       '(emacs-lisp-mode . (lambda () (current-column)))))
+
+(use-package dash
+  :ensure t)
+
+(use-package s
+  :ensure t)
+
+(use-package jsonrpc
+  :pin gnu
+  :ensure t)
+
+;;; editorconfig
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
 ;;; Modeline
 (setq mode-line-position
       '((line-number-mode ("(%l" (column-number-mode ",%c")))
@@ -286,7 +314,7 @@ Return `default-directory' if no project was found."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
+   '(jsonrpc editorconfig s copilot web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

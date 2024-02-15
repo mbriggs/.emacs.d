@@ -1,5 +1,3 @@
-- Copilot
-- Editorconfig
 - Eglot
  - working with corfu
  - ruby
