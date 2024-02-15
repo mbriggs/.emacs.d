@@ -1,11 +1,5 @@
 - Copilot
 - Editorconfig
-- Treesitter set up
- - ruby
- - typescript
- - web
- - javascript
- - golang
 - Eglot
  - working with corfu
  - ruby
@@ -16,3 +10,4 @@
 - Linting (with eglot?)
 - GPTel
 - Bring back my quotes in scratch buffer
+- store autosave in emacs dir

@@ -5,6 +5,8 @@
 /history
 *~
 .#*
+#*#
 /projects
 /.cache/
 /transient/
+/tree-sitter/
