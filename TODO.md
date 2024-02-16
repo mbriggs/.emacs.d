@@ -2,6 +2,7 @@
 - Bring back my quotes in scratch buffer
 - store autosave in emacs dir
 - Projects
+- fix all warnings
 - learn smerge
  - change comparison highlighting
  - how to resolve

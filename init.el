@@ -164,6 +164,11 @@ If the new path's directories does not exist, create them."
 (use-package flymake
   :hook (prog-mode . flymake-mode))
 
+;; TODO: swap this as soon as someone makes a childframe impl for flymake
+(use-package flymake-popon
+  :ensure t
+  :hook (flymake-mode . flymake-popon-mode))
+
 (use-package eglot
   :hook
   ((ruby-mode . eglot-ensure)
@@ -270,7 +275,7 @@ If the new path's directories does not exist, create them."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
+   '(flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
