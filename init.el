@@ -169,6 +169,31 @@ If the new path's directories does not exist, create them."
   ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   )
 
+(use-package format-all
+  :commands format-all-mode
+  :hook ((prog-mode . format-all-mode)
+	 (format-all-mode . format-all-ensure-formatter))
+  :ensure t
+  :config
+  (setq-default format-all-formatters
+		'(("CSS" prettierd)
+		  ("HTML" prettierd)
+		  ("JavaScript" prettierd)
+		  ("JSON" prettierd)
+		  ("JSON5" prettierd)
+		  ("JSX" prettierd)
+		  ("SCSS" prettierd)
+		  ("TSX" prettierd)
+		  ("Markdown" prettierd)
+		  ("Ruby" rubocop)
+		  ("Shell" shfmt)
+		  ("SQL" pg_format)
+		  ("TypeScript" prettierd)
+		  ("YAML" prettierd)
+		  ("Go" gofmt)
+		  ("Svelte" prettierd)
+		  ("TOML" prettierd)
+		  ("GraphQL" prettierd))))
 
 ;;; Copilot
 (use-package copilot

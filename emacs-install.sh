@@ -8,3 +8,4 @@ osascript -e 'tell application "Finder" to make alias file to posix file "/opt/h
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
 cp ./font/*.ttf ~/Library/Font
 . ./copilot.sh
+. ./fmt.sh
