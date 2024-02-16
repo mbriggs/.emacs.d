@@ -3,6 +3,7 @@
 - store autosave in emacs dir
 - Projects
 - fix all warnings
+- org-roam
 - learn smerge
  - change comparison highlighting
  - how to resolve

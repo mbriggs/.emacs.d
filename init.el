@@ -1,6 +1,8 @@
-;;; init.el --- Emacs configuration
+;;; init.el --- Emacs configuration  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; This is my v3 Emacs configuration, and the first time I've used holy Emacs.
+
+;;; Code:
 
 ;; Package init
 (require 'package)
@@ -8,42 +10,55 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-
-;;; Mac uses cmd as meta
+;; Mac uses cmd as meta
 (when (eq system-type 'darwin)
   (setq
    mac-command-modifier 'meta
    mac-option-modifier 'super
    mac-right-command-modifier 'control))
 
-;;; UI
+(setq
+ ;; stop the beeping
+ visible-bell t
+ ring-bell-function 'ignore
+ ;; modeline info
+ line-number-mode t
+ column-number-mode t
+ ;; ui settings
+ x-underline-at-descent-line t ; Prettier underlines
+ switch-to-buffer-obey-display-actions t ; Make switching buffers more consistent
+ show-trailing-whitespace nil ; By default, don't underline trailing spaces
+ indicate-buffer-boundaries 'left ; Show buffer top and bottom in the margin
+ mouse-wheel-tilt-scroll t ; Enable horizontal scrolling
+ mouse-wheel-flip-direction t ; Natural scrolling
+ indent-tabs-mode t ; Use tabs
+ tab-width 4 ; Set the tab width to 4
+ inhibit-startup-screen t ; No splash screen
+ sentence-end-double-space nil ; Don't require two spaces to end a sentence
+ )
 
-;; stop the beeping
-(setq visible-bell t)
-(setq ring-bell-function 'ignore)
+;; theme
+(set-frame-font "JetBrains Mono 14" nil t)
 
-;; Mode line information
-(setopt line-number-mode t)                        ; Show current line in modeline
-(setopt column-number-mode t)                      ; Show column as well
+(use-package catppuccin-theme
+  :ensure t
+  :defines catppuccin-flavor
+  :functions catppuccin-reload
+  :config
+  (setq catppuccin-flavor 'frappe)
+  (catppuccin-reload))
 
-(setopt x-underline-at-descent-line nil)           ; Prettier underlines
-(setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
 
-(setopt show-trailing-whitespace nil)      ; By default, don't underline trailing spaces
-(setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
-
-;; Enable horizontal scrolling
-(setopt mouse-wheel-tilt-scroll t)
-(setopt mouse-wheel-flip-direction t)
-
-;; We won't set these, but they're good to know about
-;;
-;; (setopt indent-tabs-mode nil)
-;; (setopt tab-width 4)
-
-;; Misc. UI tweaks
+;; misc ui settings
 (blink-cursor-mode -1)                                ; Steady cursor
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
+(repeat-mode) ; Repeat common commands with a single key press
+
+
+;; auto reload file
+(setopt auto-revert-interval 5)
+(setopt auto-revert-check-vc-info t)
+(global-auto-revert-mode)
 
 ;; Display line numbers in programming mode
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -52,58 +67,11 @@
 ;; Nice line wrapping when working with text
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-;; Modes to highlight the current line with
-(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
-  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
-
-;; Show the tab-bar as soon as tab-bar functions are invoked
-(setopt tab-bar-show 1)
-
-;; Add the time to the tab-bar, if visible
-(add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
-(add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
-(setopt display-time-format "%a %F %T")
-(setopt display-time-interval 1)
-(display-time-mode)
-
-;; font
-(set-frame-font "JetBrains Mono 14" nil t)
-
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  (setq catppuccin-flavor 'frappe)
-  (catppuccin-reload))
-
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-
-;;; Basic settings
-
-(setopt inhibit-splash-screen t)
-
-;; auto reload file
-(setopt auto-revert-interval 5)
-(setopt auto-revert-check-vc-info t)
-(global-auto-revert-mode)
-
-;; Fix archaic defaults
-(setopt sentence-end-double-space nil)
-
-;; Repeat common things
-(repeat-mode)
-
-;; Make right-click do something sensible
-(when (display-graphic-p)
-  (context-menu-mode))
-
-;; Don't litter file system with *~ backup files; put them all inside
-;; ~/.emacs.d/backup or wherever
 (defun mb--backup-file-name (fpath)
-  "Return a new file path of a given file path.
-If the new path's directories does not exist, create them."
+  "Return a new file path within the Emacs dir for backups.
+If the new path's directories does not exist, create them.
+
+FPATH is the file path to be backed up."
   (let* ((backupRootDir "~/.emacs.d/emacs-backup/")
          (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path
          (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") )))
@@ -112,8 +80,38 @@ If the new path's directories does not exist, create them."
 
 (setopt make-backup-file-name-function 'mb--backup-file-name)
 
+;; Modes to highlight the current line with
+(let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
+  (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
 
-;;; Git
+;; Enable the tab-bar
+(use-package tab-bar
+  :init
+  (setopt tab-bar-show 1)
+  :config
+  (tab-bar-mode 1)
+
+  ;; Add the time to the tab-bar, if visible
+  (add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
+  (add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
+  (setopt display-time-format "%a %F %T")
+  (setopt display-time-interval 1)
+  (display-time-mode))
+
+;; Make right-click do something sensible
+(when (display-graphic-p)
+  (context-menu-mode))
+
+
+;; Show possible keys after a short delay
+(use-package which-key
+  :ensure t
+  :functions which-key-mode
+  :config
+  (which-key-mode))
+
+
+;; Git
 
 (use-package magit
   :ensure t
@@ -122,9 +120,10 @@ If the new path's directories does not exist, create them."
 (use-package git-gutter
   :ensure t
   :requires (git-gutter-fringe fringe-helper)
+  :functions global-git-gutter-mode
   :config
-  (require 'git-gutter-fringe)
-  (require 'git-gutter)
+  ;; (require 'git-gutter-fringe)
+  ;; (require 'git-gutter)
   (if (fboundp 'fringe-mode) (fringe-mode '4))
 
   ;; places the git gutter outside the margins.
@@ -138,27 +137,16 @@ If the new path's directories does not exist, create them."
     nil nil 'bottom)
   (global-git-gutter-mode))
 
-;;; PATH should match shell
+;; PATH should match shell
 (use-package exec-path-from-shell
   :ensure t
+  :functions exec-path-from-shell-initialize
   :config
   (exec-path-from-shell-initialize))
 
-;;; Editable grep buffers
+;; Editable grep buffers
 (use-package wgrep
   :ensure t)
-
-
-;;; Tab bar
-;; Show the tab-bar as soon as tab-bar functions are invoked
-(setopt tab-bar-show 1)
-
-;; Add the time to the tab-bar, if visible
-(add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
-(add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
-(setopt display-time-format "%a %F %T")
-(setopt display-time-interval 1)
-(display-time-mode)
 
 ;;; LSP
 (use-package flymake
@@ -170,6 +158,7 @@ If the new path's directories does not exist, create them."
   :hook (flymake-mode . flymake-popon-mode))
 
 (use-package eglot
+  :requires jsonrpc
   :hook
   ((ruby-mode . eglot-ensure)
    (ruby-ts-mode . eglot-ensure)
@@ -192,11 +181,6 @@ If the new path's directories does not exist, create them."
   :custom
   (eglot-send-changes-idle-time 0.1)
   (eglot-extend-to-xref t)              ; activate Eglot in referenced non-project files
-
-  :config
-  (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '((ruby-mode ruby-ts-mode) "ruby-lsp"))
   )
 
 (use-package format-all
@@ -230,6 +214,7 @@ If the new path's directories does not exist, create them."
   :after (editorconfig dash s jsonrpc)
   :load-path ".copilot"
   :hook (prog-mode . copilot-mode)
+  :defines (copilot-indentation-alist copilot-completion-map)
   :bind (:map copilot-completion-map
 	      ("M-;" . copilot-accept-completion))
   :config
@@ -245,15 +230,19 @@ If the new path's directories does not exist, create them."
 
 (use-package jsonrpc
   :pin gnu
-  :ensure t)
+  :ensure t
+  :functions jsonrpc--log-event
+  :config
+  (fset #'jsonrpc--log-event #'ignore))  ; massive perf boost---don't log every event)
 
-;;; editorconfig
+   ;;; editorconfig
 (use-package editorconfig
   :ensure t
+  :functions editorconfig-mode
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode))
 
-;;;;; External files
+   ;;;;; External files
 
 ;; Completion -- minibuffer, intellisense, etc
 (load-file (expand-file-name "completion.el" user-emacs-directory))
@@ -267,7 +256,7 @@ If the new path's directories does not exist, create them."
 ;; Modeline
 (load-file (expand-file-name "lang.el" user-emacs-directory))
 
-;;; Customize
+   ;;; Customize
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -282,3 +271,6 @@ If the new path's directories does not exist, create them."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(provide 'init)
+;;; init.el ends here
