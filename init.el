@@ -1,3 +1,7 @@
+;;; init.el --- Emacs configuration
+;;; Commentary:
+;;; This is my v3 Emacs configuration, and the first time I've used holy Emacs.
+
 ;; Package init
 (require 'package)
 (require 'use-package)
@@ -157,10 +161,28 @@ If the new path's directories does not exist, create them."
 (display-time-mode)
 
 ;;; LSP
+(use-package flymake
+  :hook (prog-mode . flymake-mode))
+
 (use-package eglot
-  ;; Configure hooks to automatically turn-on eglot for selected modes
-  ; :hook
-  ; (((python-mode ruby-mode elixir-mode) . eglot))
+  :hook
+  ((ruby-mode . eglot-ensure)
+   (ruby-ts-mode . eglot-ensure)
+   (yaml-ts-mode . eglot-ensure)
+   (typescript-ts-mode .eglot-ensure)
+   (js-mode . eglot-ensure)
+   (js-ts-mode . eglot-ensure)
+   (web-mode . eglot-ensure)
+   (sh-mode . eglot-ensure)
+   (bash-ts-mode . eglot-ensure)
+   (html-mode . eglot-ensure)
+   (css-mode . eglot-ensure)
+   (css-ts-mode . eglot-ensure)
+   (json-ts-mode . eglot-ensure)
+   (cmake-ts-mode . eglot-ensure)
+   (go-ts-mode . eglot-ensure)
+   (dockerfile-ts-mode . eglot-ensure))
+
 
   :custom
   (eglot-send-changes-idle-time 0.1)
@@ -168,9 +190,8 @@ If the new path's directories does not exist, create them."
 
   :config
   (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
-  ;; Sometimes you need to tell Eglot where to find the language server
-  ; (add-to-list 'eglot-server-programs
-  ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((ruby-mode ruby-ts-mode) "ruby-lsp"))
   )
 
 (use-package format-all
