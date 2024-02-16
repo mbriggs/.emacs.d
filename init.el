@@ -133,8 +133,12 @@ If the new path's directories does not exist, create them."
   (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
     nil nil 'bottom)
   (global-git-gutter-mode))
-  
-  
+
+;;; PATH should match shell
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 ;;; Editable grep buffers
 (use-package wgrep
