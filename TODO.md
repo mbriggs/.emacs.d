@@ -1,7 +1,4 @@
 - GPTel
-- Bring back my quotes in scratch buffer
-- store autosave in emacs dir
-- Projects
 - fix all warnings
 - org-roam
 - learn smerge

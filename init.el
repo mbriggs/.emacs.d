@@ -31,10 +31,25 @@
  indicate-buffer-boundaries 'left ; Show buffer top and bottom in the margin
  mouse-wheel-tilt-scroll t ; Enable horizontal scrolling
  mouse-wheel-flip-direction t ; Natural scrolling
+ create-lockfiles nil ; Don't create lockfiles
  indent-tabs-mode t ; Use tabs
  tab-width 4 ; Set the tab width to 4
  inhibit-startup-screen t ; No splash screen
  sentence-end-double-space nil ; Don't require two spaces to end a sentence
+ backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))) ; Store backups in a separate directory
+ auto-save-file-name-transforms `((".*" ,(expand-file-name "autosave" user-emacs-directory) t)) ; Store autosaves in a separate directory
+ backup-by-copying t ; Copy files when backing up
+ delete-old-versions t ; Delete old versions of files
+ kept-new-versions 6 ; Keep 6 new versions
+ version-control t ; Use version control
+ auto-save-default t ; Autosave files
+ inhibit-startup-message t ; Don't show the startup message
+ initial-major-mode 'emacs-lisp-mode ; Start in elisp mode
+ fill-column 85 ; Set the fill column
+ uniquify-buffer-name-style 'forward ; Uniquify buffer names
+ uniquify-separator ":" ; Uniquify buffer names
+ require-final-newline t ; Always end files with a newline
+ password-cache-expiry (* 60 15) ; Don't expire passwords
  )
 
 ;; theme
@@ -53,6 +68,8 @@
 (blink-cursor-mode -1)                                ; Steady cursor
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
 (repeat-mode) ; Repeat common commands with a single key press
+(fset 'yes-or-no-p 'y-or-n-p)                          ; y/n instead of yes/no
+(show-paren-mode)                                      ; Highlight matching parens
 
 
 ;; auto reload file
@@ -67,22 +84,26 @@
 ;; Nice line wrapping when working with text
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(defun mb--backup-file-name (fpath)
-  "Return a new file path within the Emacs dir for backups.
-If the new path's directories does not exist, create them.
-
-FPATH is the file path to be backed up."
-  (let* ((backupRootDir "~/.emacs.d/emacs-backup/")
-         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path
-         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") )))
-    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
-    backupFilePath))
-
-(setopt make-backup-file-name-function 'mb--backup-file-name)
-
 ;; Modes to highlight the current line with
 (let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
   (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
+
+
+;; Compile init.el on save
+
+(defun mb--compile-init-on-save ()
+  "Compile init.el on save."
+  (when (equal (file-name-nondirectory (buffer-file-name)) "init.el")
+    (message "Byte-compiling init.el (from specific hook in mb--compile-init-on-save)...")
+    ;; Byte-compile init.el. This should trigger native-compilation automatically if enabled.
+    (byte-compile-file (buffer-file-name))))
+
+(defun mb-add-compile-init-on-save-hook ()
+  "Add a hook to compile init.el on save."
+  (add-hook 'after-save-hook #'mb--compile-init-on-save nil 'local))
+
+(add-hook 'emacs-lisp-mode-hook #'mb-add-compile-init-on-save-hook)
+
 
 ;; Enable the tab-bar
 (use-package tab-bar
@@ -102,6 +123,12 @@ FPATH is the file path to be backed up."
 (when (display-graphic-p)
   (context-menu-mode))
 
+(use-package recentf
+  :init
+  (setopt recentf-max-saved-items 100)
+  (setopt recentf-auto-cleanup 'never)
+  :config
+  (recentf-mode))
 
 ;; Show possible keys after a short delay
 (use-package which-key
@@ -109,6 +136,13 @@ FPATH is the file path to be backed up."
   :functions which-key-mode
   :config
   (which-key-mode))
+
+;; Show an inspirational quote at startup
+(use-package mb-fortune
+  :load-path "lisp"
+  :functions mb-fortune
+  :config
+  (setq initial-scratch-message (concat ";; " (mb-fortune) "\n\n")))
 
 
 ;; Git
