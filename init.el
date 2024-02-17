@@ -76,12 +76,17 @@
 	    (lambda ()
 	      (setq catppuccin-flavor 'frappe)
 	      (catppuccin-reload)
+	      (modify-frame-parameters nil '((ns-transparent-titlebar . t)
+					     (ns-appearance . dark)))
+
 	      ))
 
   (add-hook 'auto-dark-light-mode-hook
 	    (lambda ()
 	      (setq catppuccin-flavor 'latte)
 	      (catppuccin-reload)
+	      (modify-frame-parameters nil '((ns-transparent-titlebar . t)
+					     (ns-appearance . light)))
 	      ))
 
   (auto-dark-mode t))
