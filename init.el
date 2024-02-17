@@ -63,6 +63,29 @@
   (setq catppuccin-flavor 'frappe)
   (catppuccin-reload))
 
+(use-package auto-dark
+  :ensure t
+  :defines (auto-dark-allow-osascript auto-dark-light-theme auto-dark-dark-theme)
+  :functions auto-dark-mode
+  :config
+  (setq auto-dark-allow-osascript t)
+  (setq auto-dark-light-theme 'catppuccin)
+  (setq auto-dark-dark-theme 'catppuccin)
+
+  (add-hook 'auto-dark-dark-mode-hook
+	    (lambda ()
+	      (setq catppuccin-flavor 'frappe)
+	      (catppuccin-reload)
+	      ))
+
+  (add-hook 'auto-dark-light-mode-hook
+	    (lambda ()
+	      (setq catppuccin-flavor 'latte)
+	      (catppuccin-reload)
+	      ))
+
+  (auto-dark-mode t))
+
 
 ;; misc ui settings
 (blink-cursor-mode -1)                                ; Steady cursor
@@ -323,7 +346,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
+   '(auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless vertico catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
