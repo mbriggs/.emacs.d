@@ -104,6 +104,10 @@
 
 (add-hook 'emacs-lisp-mode-hook #'mb-add-compile-init-on-save-hook)
 
+;; Enable dired-x when dired loads
+(with-eval-after-load 'dired
+  (require 'dired-x))
+
 ;; Commands work on the current line if no region is selected
 (use-package whole-line-or-region
   :ensure t
