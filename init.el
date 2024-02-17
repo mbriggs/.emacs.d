@@ -113,11 +113,13 @@
   :ensure t
   :functions eat-eshell-mode eat-eshell-visual-command-mode
   :config
-  ;; For `eat-eshell-mode'.
-  (add-hook 'eshell-load-hook #'eat-eshell-mode)
 
-  ;; For `eat-eshell-visual-command-mode'.
-  (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode))
+  (setopt eat-kill-buffer-on-exit t)
+
+  (add-hook 'eshell-load-hook #'eat-eshell-mode)
+  (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
+  )
+
 
 ;; Commands work on the current line if no region is selected
 (use-package whole-line-or-region
