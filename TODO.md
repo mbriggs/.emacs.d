@@ -1,5 +1,4 @@
 - GPTel
-- fix all warnings
 - org-roam
 - learn smerge
  - change comparison highlighting

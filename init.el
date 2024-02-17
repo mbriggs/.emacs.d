@@ -247,7 +247,9 @@
 (use-package copilot
   :after (editorconfig dash s jsonrpc)
   :load-path ".copilot"
-  :hook (prog-mode . copilot-mode)
+  :hook ((prog-mode . copilot-mode)
+	 (copilot-mode . (lambda ()
+			   (setq-local copilot--indent-warning-printed-p t))))
   :defines (copilot-indentation-alist copilot-completion-map)
   :bind (:map copilot-completion-map
 	      ("M-;" . copilot-accept-completion))
