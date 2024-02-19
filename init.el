@@ -14,6 +14,11 @@
   (package-initialize))
 
 (use-package emacs ; core configuration
+  :bind (("M-o" . project-find-file)
+	 ("M-O" . other-window)
+	 ("M-e" . consult-project-buffer)
+	 ("M-E" . consult-buffer))
+
   :config
 
   ;; Mac uses cmd as meta
@@ -310,18 +315,25 @@
   :functions editorconfig-mode
   :hook (prog-mode . editorconfig-mode))
 
+(use-package treesit-auto ; auto download and install treesitter grammars
+  :ensure t
+  :functions (treesit-auto-install treesit-auto-add-to-auto-mode-alist global-treesit-auto-mode)  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(use-package markdown-mode ; markdown mode
+  :ensure t)
+
+(use-package web-mode ; web mode for erb
+  :ensure t
+  :mode (("\\.erb$" . web-mode)))
+
 
 ;; Completion -- minibuffer, intellisense, etc
 (load-file (expand-file-name "completion.el" user-emacs-directory))
 
-;; Global key bindings
-(load-file (expand-file-name "binding.el" user-emacs-directory))
-
-;; Modes for languages not bundled
-(load-file (expand-file-name "lang.el" user-emacs-directory))
-
-;; Modeline
-(load-file (expand-file-name "lang.el" user-emacs-directory))
 
    ;;; Customize
 
