@@ -6,6 +6,9 @@
 ;; Using as much of the built in functionality as possible. Naviagation of this
 ;; file is intended to happen via consult-outline (M-g o).
 
+;; On install, run `M-x nerd-icons-install-fonts` to install the nerd fonts for
+;; the icons in the modeline.
+
 ;;; Code:
 
 (use-package package ; package setup
@@ -61,6 +64,7 @@
    uniquify-separator ":" ; Uniquify buffer names
    require-final-newline t ; Always end files with a newline
    password-cache-expiry (* 60 15) ; Don't expire passwords
+   display-time-mode nil ; Don't show the time in the mode line
    )
 
   ;; theme
@@ -227,6 +231,18 @@
   (exec-path-from-shell-initialize))
 
 (use-package wgrep ; edit grep results
+  :ensure t)
+
+(use-package doom-modeline
+  :ensure t
+  :functions doom-modeline-mode
+  :defines doom-modeline-project-detection
+  :config
+  (setq doom-modeline-project-detection 'project)
+  (display-time-mode -1)
+  (doom-modeline-mode 1))
+
+(use-package nerd-icons
   :ensure t)
 
 (use-package flymake ; on the fly syntax checking
@@ -635,15 +651,13 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-line)
   )
 
-   ;;; Customize
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
