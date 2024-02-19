@@ -1,7 +1,10 @@
-;; Silence stupid startup message
-(setq inhibit-startup-echo-area-message (user-login-name))
+;;; early-init.el --- Early initialization. -*- lexical-binding: t; -*-
+;;; Commentary:
 
-;; Default frame configuration: full screen, good-looking title bar on macOS
+;; Init code that runs before the package system and GUI is initialized.
+
+;;; Code:
+
 (setq frame-resize-pixelwise t)
 (tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
 (setq default-frame-alist '(
@@ -9,3 +12,5 @@
                             (vertical-scroll-bars . nil)
                             (horizontal-scroll-bars . nil)
                             (ns-transparent-titlebar . t)))
+;;; early-init.el ends here
+(provide 'early-init)
