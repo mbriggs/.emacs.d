@@ -116,6 +116,12 @@
   (add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
   )
 
+(use-package mb-op ; one-password integration for secrets
+  :functions mb-op-register-reference
+  :commands mb-op-read
+  :config
+  (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential"))
+
 (use-package catppuccin-theme ; my favourite theme, both light and dark variants
   :ensure t
   :defines catppuccin-flavor
