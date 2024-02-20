@@ -114,6 +114,10 @@
 
   ;; add the lisp directory to the load path, for non repo third party code
   (add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
+
+  ;; when splitting windows, focus on the new window
+  (defadvice split-window (after focus-new-window activate)
+    (select-window (get-lru-window)))
   )
 
 (use-package mb-op ; one-password integration for secrets
