@@ -126,6 +126,21 @@
   :config
   (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential"))
 
+(use-package jist ; gist integration
+  :bind ("C-c g g" . (lambda ()
+		       "DWIM for create gist current buffer or region."
+		       (interactive)
+		       (if (region-active-p)
+			   (jist-auth-region)
+			 (jist-auth-buffer))))
+  :ensure t
+  :commands (jist-auth-buffer jist-auth-region jist-auth-buffer-public jist-auth-region-public)
+  :defines jist-github-token jist-enable-default-authorized
+  :config
+  (setq
+   jist-github-token (mb-op-read 'gist-token)
+   jist-enable-default-authorized t))
+
 (use-package catppuccin-theme ; my favourite theme, both light and dark variants
   :ensure t
   :defines catppuccin-flavor
@@ -677,7 +692,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
