@@ -162,6 +162,9 @@
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode))
 
+(use-package highlight-defined ; highlight defined symbols
+  :ensure t
+  :hook (emacs-lisp-mode . highlight-defined-mode))
 
 (use-package whole-line-or-region ; commands work on the current line if no region is selected
   :ensure t
@@ -256,17 +259,13 @@
 (use-package eglot ; language server protocol
   :requires jsonrpc
   :hook
-  ((ruby-mode . eglot-ensure)
-   (ruby-ts-mode . eglot-ensure)
+  ((ruby-ts-mode . eglot-ensure)
    (yaml-ts-mode . eglot-ensure)
    (typescript-ts-mode .eglot-ensure)
-   (js-mode . eglot-ensure)
    (js-ts-mode . eglot-ensure)
    (web-mode . eglot-ensure)
-   (sh-mode . eglot-ensure)
    (bash-ts-mode . eglot-ensure)
-   (html-mode . eglot-ensure)
-   (css-mode . eglot-ensure)
+   (html-ts-mode . eglot-ensure)
    (css-ts-mode . eglot-ensure)
    (json-ts-mode . eglot-ensure)
    (cmake-ts-mode . eglot-ensure)
@@ -651,13 +650,20 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-line)
   )
 
+(use-package yaml-mode ; yaml mode
+  :ensure t)
+
+(use-package yard-mode ; yard mode for ruby
+  :ensure t
+  :hook ((ruby-mode ruby-ts-mode) . yard-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
