@@ -1,17 +1,10 @@
-- GPTel
-- org-roam
 - learn smerge
  - change comparison highlighting
  - how to resolve
  - change prefix
 - packages
- - https://github.com/minad/tempel
- - https://github.com/emacsorphanage/direx
- - https://github.com/alexluigit/dirvish
- - https://www.emacswiki.org/emacs/DiredPlus
- - https://github.com/Fuco1/dired-hacks
- - https://github.com/emacsorphanage/dired-k
  - https://www.emacswiki.org/emacs/ParEdit
  - https://github.com/dougm/goflymake
  - https://github.com/manute/gorepl-mode
  - https://github.com/karthink/gptel
+ - https://www.orgroam.com/
