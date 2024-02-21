@@ -4,3 +4,38 @@
  - change comparison highlighting
  - how to resolve
  - change prefix
+- packages
+ - https://github.com/nonsequitur/inf-ruby
+ - https://github.com/pezra/rspec-mode
+ - https://github.com/Malabarba/paradox
+ - https://github.com/Silex/package-utils
+ - https://github.com/Malabarba/beacon
+ - https://github.com/protesilaos/pulsar
+ - https://github.com/k-talo/volatile-highlights.el
+ - https://github.com/manateelazycat/awesome-tab
+ - https://github.com/ema2159/centaur-tabs
+ - https://github.com/abo-abo/avy
+ - https://github.com/emacsorphanage/anzu
+ - https://github.com/sulami/literate-calc-mode.el
+ - https://github.com/nschum/highlight-symbol.el
+ - https://github.com/magnars/multiple-cursors.el
+ - https://github.com/benma/visual-regexp-steroids.el/
+ - https://github.com/mkcms/interactive-align
+ - https://github.com/tslilc/siege-mode
+ - https://github.com/ganmacs/emacs-surround
+ - https://elpa.gnu.org/packages/expreg.html
+ - https://github.com/polymode/polymode
+ - https://github.com/minad/tempel
+ - https://github.com/emacsorphanage/direx
+ - https://github.com/alexluigit/dirvish
+ - https://www.emacswiki.org/emacs/DiredPlus
+ - https://github.com/Fuco1/dired-hacks
+ - https://github.com/emacsorphanage/dired-k
+ - https://www.emacswiki.org/emacs/ParEdit
+ - https://github.com/dougm/goflymake
+ - https://github.com/manute/gorepl-mode
+ - https://github.com/karthink/gptel
+ - https://github.com/magit/forge
+ - https://github.com/alphapapa/magit-todos
+ - https://github.com/sshaw/git-link
+ - https://github.com/emacsorphanage/git-messenger
