@@ -65,6 +65,11 @@
    require-final-newline t ; Always end files with a newline
    password-cache-expiry (* 60 15) ; Don't expire passwords
    display-time-mode nil ; Don't show the time in the mode line
+   completion-cycle-threshold 1 ; show popup unless only 1 match
+   completions-detailed t ; show detailed completions
+   tab-always-indent 'complete ; tab completes
+   completion-auto-help t ; show completions help
+   completions-group t ; group completions
    )
 
   ;; theme
@@ -712,6 +717,18 @@
 	(ruby-send-region (region-beginning) (region-end))
       (ruby-send-line))))
 
+(use-package mb-ruby-testing ; choose the right test runner for the current project
+  :commands mb-ruby-testing-setup
+  :hook (ruby-ts-mode . mb-ruby-testing-setup))
+
+(use-package rspec-mode ; rspec mode
+  :ensure t
+  :commands rspec-mode)
+
+(use-package minitest ; minitest mode
+  :ensure t
+  :commands minitest-mode)
+
 (use-package yard-mode ; yard mode for ruby
   :ensure t
   :hook ((ruby-mode ruby-ts-mode) . yard-mode))
@@ -722,7 +739,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -5,8 +5,6 @@
  - how to resolve
  - change prefix
 - packages
- - https://github.com/pezra/rspec-mode
- - https://github.com/arthurnn/minitest-emacs
  - https://github.com/Malabarba/paradox
  - https://github.com/Silex/package-utils
  - https://github.com/Malabarba/beacon
@@ -35,5 +33,3 @@
  - https://github.com/dougm/goflymake
  - https://github.com/manute/gorepl-mode
  - https://github.com/karthink/gptel
- - https://github.com/magit/forge
- - https://github.com/alphapapa/magit-todos
