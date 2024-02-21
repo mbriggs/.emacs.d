@@ -235,7 +235,11 @@
 
 (use-package magit ; git porcelain
   :ensure t
-  :bind (("C-x g" . magit-status)))
+  :commands magit-status magit-blame-mode
+  :bind (("C-x g" . magit-status)
+	 ("C-c g b" . magit-blame)
+	 ("C-c g l" . magit-log-buffer-file)
+	 ("C-c g L" . magit-log-all)))
 
 (use-package git-gutter ; show git changes in the fringe
   :ensure t
@@ -693,7 +697,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
