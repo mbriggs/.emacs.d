@@ -292,7 +292,7 @@
 (use-package wgrep ; edit grep results
   :ensure t)
 
-(use-package doom-modeline
+(use-package doom-modeline ; fancy modeline
   :ensure t
   :functions doom-modeline-mode
   :defines doom-modeline-project-detection
@@ -301,8 +301,33 @@
   (display-time-mode -1)
   (doom-modeline-mode 1))
 
-(use-package nerd-icons
+(use-package nerd-icons ; icons in emacs
   :ensure t)
+
+(use-package nerd-icons-dired ; icons in dired
+  :ensure t
+  :after dired
+  :functions nerd-icons-dired-mode
+  :hook (dired-mode . nerd-icons-dired-mode))
+
+(use-package dired ; file manager
+  :config
+  (when (eq system-type 'darwin)
+    (setq
+     dired-use-ls-dired t
+     insert-directory-program "gls"
+     dired-listing-switches "-aBhl --group-directories-first")))
+
+(use-package dired-x ; dired extensions
+  :after dired
+  :init
+  (setopt dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..*$"))
+
+(use-package dired-narrow ; filter dired
+  :bind (:map dired-mode-map
+	      ("/" . dired-narrow))
+  :ensure t
+  :after dired)
 
 (use-package flymake ; on the fly syntax checking
   :hook (prog-mode . flymake-mode))
@@ -456,7 +481,7 @@
   ;; available in the *Completions* buffer, add it to the
   ;; `completion-list-mode-map'.
   :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
+	      ("M-A" . marginalia-cycle))
 
   ;; The :init section is always executed.
   :init
@@ -496,7 +521,7 @@
 
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none)))))
 
@@ -753,7 +778,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
