@@ -5,8 +5,8 @@
  - how to resolve
  - change prefix
 - packages
- - https://github.com/nonsequitur/inf-ruby
  - https://github.com/pezra/rspec-mode
+ - https://github.com/arthurnn/minitest-emacs
  - https://github.com/Malabarba/paradox
  - https://github.com/Silex/package-utils
  - https://github.com/Malabarba/beacon
@@ -37,5 +37,3 @@
  - https://github.com/karthink/gptel
  - https://github.com/magit/forge
  - https://github.com/alphapapa/magit-todos
- - https://github.com/sshaw/git-link
- - https://github.com/emacsorphanage/git-messenger

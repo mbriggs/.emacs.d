@@ -692,6 +692,26 @@
 (use-package yaml-mode ; yaml mode
   :ensure t)
 
+(use-package inf-ruby ; inferior ruby mode
+  :ensure t
+  :bind (("C-c C-i S" . inf-ruby)
+	 ("C-c C-i b" . ruby-send-buffer)
+	 ("C-c C-i r" . ruby-send-region)
+	 ("C-c C-i RET" . ruby-send-dwim)
+	 ("C-c C-i i" . ruby-switch-to-inf)
+	 ("C-c C-i s" . inf-ruby-console-auto)
+	 ("C-c C-i t" . inf-ruby-test))
+  :commands inf-ruby-minor-mode
+  :hook (ruby-ts-mode . inf-ruby-minor-mode)
+  :functions (ruby-send-line ruby-send-region)
+  :init
+  (defun ruby-send-dwim ()
+    "Send the appropriate ruby code to the inferior ruby process."
+    (interactive)
+    (if (region-active-p)
+	(ruby-send-region (region-beginning) (region-end))
+      (ruby-send-line))))
+
 (use-package yard-mode ; yard mode for ruby
   :ensure t
   :hook ((ruby-mode ruby-ts-mode) . yard-mode))
@@ -702,7 +722,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
