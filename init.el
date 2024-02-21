@@ -233,6 +233,11 @@
   :config
   (setq initial-scratch-message (concat ";; " (mb-fortune) "\n\n")))
 
+(use-package git-link ; get a link to the current line in the current file
+  :ensure t
+  :commands git-link
+  :bind ("C-x g k" . git-link))
+
 (use-package magit ; git porcelain
   :ensure t
   :commands magit-status magit-blame-mode
