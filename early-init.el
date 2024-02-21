@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+;; PERF: Garbage collection is a big contributor to startup times. This fends it
+;;   off, but will be reset later by `gcmh-mode' (or in doom-cli.el, if in a
+;;   noninteractive session). Not resetting it later causes stuttering/freezes.
+(setq gc-cons-threshold most-positive-fixnum)
+
 (setq frame-resize-pixelwise t)
 (tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
 (setq default-frame-alist '(

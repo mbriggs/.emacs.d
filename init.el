@@ -17,7 +17,7 @@
   (package-initialize))
 
 (use-package benchmark-init ; benchmarking, enable to benchmark init
-  :disabled
+  ;; :disabled
   :ensure t
   :config
   ;; To disable collection of benchmark data after init is done.
@@ -38,6 +38,39 @@
      mac-option-modifier 'super
      mac-right-command-modifier 'control))
 
+  ;;; Runtime optimizations (stolen from doom)
+  ;; PERF: A second, case-insensitive pass over `auto-mode-alist' is time wasted.
+  (setq auto-mode-case-fold nil)
+
+  ;; PERF: Disable bidirectional text scanning for a modest performance boost.
+  ;;   I've set this to `nil' in the past, but the `bidi-display-reordering's docs
+  ;;   say that is an undefined state and suggest this to be just as good:
+  (setq-default bidi-display-reordering 'left-to-right
+		bidi-paragraph-direction 'left-to-right)
+
+  ;; PERF: Disabling BPA makes redisplay faster, but might produce incorrect
+  ;;   reordering of bidirectional text with embedded parentheses (and other
+  ;;   bracket characters whose 'paired-bracket' Unicode property is non-nil).
+  (setq bidi-inhibit-bpa t)  ; Emacs 27+ only
+
+  ;; Reduce rendering/line scan work for Emacs by not rendering cursors or regions
+  ;; in non-focused windows.
+  (setq-default cursor-in-non-selected-windows nil)
+  (setq highlight-nonselected-windows nil)
+
+  ;; Disable;; Don't ping things that look like domain names.
+  (setq-default ffap-machine-p-known 'reject)
+
+  ;; Font compacting can be terribly expensive, especially for rendering icon
+  ;; fonts on Windows. Whether disabling it has a notable affect on Linux and Mac
+  ;; hasn't been determined, but do it anyway, just in case. This increases memory
+  ;; usage, however!
+  (setq inhibit-compacting-font-caches t)
+
+  ;; Increase how much is read from processes in a single chunk (default is 4kb).
+  ;; This is further increased elsewhere, where needed (like our LSP module).
+  (setq read-process-output-max (* 64 1024))  ; 64kb
+
   (setq
    ;; stop the beeping
    visible-bell t
@@ -45,6 +78,8 @@
    ;; modeline info
    line-number-mode t
    column-number-mode t
+   ;; default modes
+   blink-cursor-mode nil
    ;; ui settings
    x-underline-at-descent-line t ; Prettier underlines
    switch-to-buffer-obey-display-actions t ; Make switching buffers more consistent
@@ -79,6 +114,13 @@
    completions-group t ; group completions
    )
 
+  ;; Contrary to what many Emacs users have in their configs, you don't need more
+  ;; than this to make UTF-8 the default coding system:
+  (set-language-environment "UTF-8")
+  ;; ...but `set-language-environment' also sets `default-input-method', which is
+  ;; a step too opinionated.
+  (setq default-input-method nil)
+
   ;; theme
   (set-frame-font "JetBrains Mono 14" nil t)
 
@@ -95,31 +137,12 @@
   (setq enable-recursive-minibuffers t)
 
   ;; misc ui settings
-  (blink-cursor-mode -1)                                ; Steady cursor
   (pixel-scroll-precision-mode)                         ; Smooth scrolling
-  (repeat-mode) ; Repeat common commands with a single key press
   (fset 'yes-or-no-p 'y-or-n-p)                          ; y/n instead of yes/no
-  (show-paren-mode)                                      ; Highlight matching parens
 
   ;; Make right-click do something sensible
   (when (display-graphic-p)
     (context-menu-mode))
-
-  ;; auto reload file
-  (setopt auto-revert-interval 5)
-  (setopt auto-revert-check-vc-info t)
-  (global-auto-revert-mode)
-
-  ;; Display line numbers in programming mode
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-  (setopt display-line-numbers-width 3)           ; Set a minimum width
-
-  ;; Nice line wrapping when working with text
-  (add-hook 'text-mode-hook 'visual-line-mode)
-
-  ;; Modes to highlight the current line with
-  (let ((hl-line-hooks '(text-mode-hook prog-mode-hook)))
-    (mapc (lambda (hook) (add-hook hook 'hl-line-mode)) hl-line-hooks))
 
   ;; add the lisp directory to the load path, for my code
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -131,6 +154,40 @@
   (defadvice split-window (after focus-new-window activate)
     (select-window (get-lru-window)))
   )
+
+(use-package show-paren ; show matching parens
+  :hook (prog-mode . show-paren-mode))
+
+(use-package repeat ; repeat common commands with a single key
+  :hook (after-init . repeat-mode))
+
+(use-package display-line-numbers ; display line numbers
+  :hook (prog-mode . display-line-numbers-mode)
+  :config
+  (setq display-line-numbers-width 3))
+
+(use-package gcmh ; garbage collection
+  :ensure t
+  :hook (after-init . gcmh-mode)
+  :defines gcmh-idle-delay gcmh-auto-idle-delay-factor gcmh-high-cons-threshold
+  :config
+  ;; The GC introduces annoying pauses and stuttering into our Emacs experience,
+  ;; so we use `gcmh' to stave off the GC while we're using Emacs, and provoke it
+  ;; when it's idle. However, if the idle delay is too long, we run the risk of
+  ;; runaway memory usage in busy sessions. If it's too low, then we may as well
+  ;; not be using gcmh at all.
+  (setq gcmh-idle-delay 'auto  ; default is 15s
+	gcmh-auto-idle-delay-factor 10
+	gcmh-high-cons-threshold (* 16 1024 1024)))
+
+
+(use-package auto-revert ; auto revert files
+  :defer 5
+  :defines auto-revert-interal auto-revert-check-vc-info
+  :config
+  (global-auto-revert-mode)
+  (setq auto-revert-interal 5
+	auto-revert-check-vc-info t))
 
 (use-package mb-op ; one-password integration for secrets
   :functions mb-op-register-reference
@@ -156,11 +213,10 @@
 
 (use-package catppuccin-theme ; my favourite theme, both light and dark variants
   :ensure t
-  :defines catppuccin-flavor
-  :functions catppuccin-reload
+  :init
+  (setopt catppuccin-flavor 'frappe)
   :config
-  (setq catppuccin-flavor 'frappe)
-  (catppuccin-reload))
+  (load-theme 'catppuccin :no-confirm))
 
 (use-package auto-dark ; set theme based on osx system state DISABLED DUE TO POOR PERF AT LOAD
   :ensure t
@@ -238,9 +294,10 @@
   :ensure t)
 
 (use-package recentf ; track recent files
+  :defer 2
   :init
   (setopt recentf-max-saved-items 100)
-  (setopt recentf-auto-cleanup 'never)
+  (setopt recentf-keep '(file-remote-p file-readable-p))
   :config
   (recentf-mode 1))
 
@@ -292,6 +349,7 @@
   :ensure t
   :functions exec-path-from-shell-initialize
   :config
+  (setopt exec-path-from-shell-arguments nil)
   (exec-path-from-shell-initialize))
 
 (use-package wgrep ; edit grep results
@@ -784,13 +842,15 @@
   :ensure t
   :hook ((ruby-mode ruby-ts-mode) . yard-mode))
 
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
