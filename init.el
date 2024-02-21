@@ -127,19 +127,20 @@
   (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential"))
 
 (use-package jist ; gist integration
-  :bind ("C-c g g" . (lambda ()
-		       "DWIM for create gist current buffer or region."
-		       (interactive)
-		       (if (region-active-p)
-			   (jist-auth-region)
-			 (jist-auth-buffer))))
+  :bind ("C-c g g" . jist-dwim)
   :ensure t
   :commands (jist-auth-buffer jist-auth-region jist-auth-buffer-public jist-auth-region-public)
   :defines jist-github-token jist-enable-default-authorized
+  :init
+  (defun jist-dwim ()
+    "DWIM for create gist current buffer or region."
+    (interactive)
+    (if (region-active-p)))
   :config
   (setq
    jist-github-token (mb-op-read 'gist-token)
    jist-enable-default-authorized t))
+
 
 (use-package catppuccin-theme ; my favourite theme, both light and dark variants
   :ensure t
