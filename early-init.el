@@ -11,6 +11,7 @@
 			    ;; You can turn off scroll bars by uncommenting these lines:
                             (vertical-scroll-bars . nil)
                             (horizontal-scroll-bars . nil)
+			    (ns-appearance . dark)
                             (ns-transparent-titlebar . t)))
 ;;; early-init.el ends here
 (provide 'early-init)
