@@ -127,7 +127,7 @@
   (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential"))
 
 (use-package jist ; gist integration
-  :bind ("C-c g g" . jist-dwim)
+  :bind ("C-x g j" . jist-dwim)
   :ensure t
   :commands (jist-auth-buffer jist-auth-region jist-auth-buffer-public jist-auth-region-public)
   :defines jist-github-token jist-enable-default-authorized
@@ -236,10 +236,10 @@
 (use-package magit ; git porcelain
   :ensure t
   :commands magit-status magit-blame-mode
-  :bind (("C-x g" . magit-status)
-	 ("C-c g b" . magit-blame)
-	 ("C-c g l" . magit-log-buffer-file)
-	 ("C-c g L" . magit-log-all)))
+  :bind (("C-x g g" . magit-status)
+	 ("C-x g b" . magit-blame)
+	 ("C-x g l" . magit-log-buffer-file)
+	 ("C-x g L" . magit-log-all)))
 
 (use-package git-gutter ; show git changes in the fringe
   :ensure t
