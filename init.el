@@ -183,6 +183,15 @@
 
   (auto-dark-mode t))
 
+(use-package expreg ; expand region
+  :ensure t
+  :bind (("<M-up>" . expreg-expand)
+	 ("<M-down>" . expreg-contract)))
+
+(use-package surround ; surround text with a key
+  :ensure t
+  :bind-keymap ("C-q" . surround-keymap))
+
 (use-package eat ; use eshell for most stuff, eat for tui style
   :ensure t
   :functions eat-eshell-mode eat-eshell-visual-command-mode
@@ -739,7 +748,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
