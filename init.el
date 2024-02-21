@@ -311,6 +311,9 @@
   :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package dired ; file manager
+  :hook (buffer-list-update . (lambda ()
+				(when (equal major-mode 'dired-mode)
+				  (revert-buffer t t t))))
   :config
   (when (eq system-type 'darwin)
     (setq
@@ -327,7 +330,10 @@
   :bind (:map dired-mode-map
 	      ("/" . dired-narrow))
   :ensure t
-  :after dired)
+  :after dired
+  :defines dired-narrow-exit-action
+  :config
+  (setq dired-narrow-exit-action 'dired-find-file))
 
 (use-package flymake ; on the fly syntax checking
   :hook (prog-mode . flymake-mode))
