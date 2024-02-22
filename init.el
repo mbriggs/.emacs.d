@@ -256,6 +256,16 @@
   :ensure t
   :bind-keymap ("C-q" . surround-keymap))
 
+(use-package sh-script
+  :defer t
+  :mode (("\\.zsh\\'" . bash-ts-mode)
+	 ("\\.zshrc\\'" . bash-ts-mode)
+	 ("\\.zshenv\\'" . bash-ts-mode)
+	 ("\\.zprofile\\'" . bash-ts-mode)
+	 ("\\.zlogin" . bash-ts-mode)
+	 ("\\.envrc\\'" . bash-ts-mode)
+	 ("\\.envrc.local\\'" . bash-ts-mode)))
+
 (use-package eat ; use eshell for most stuff, eat for tui style
   :ensure t
   :functions eat-eshell-mode eat-eshell-visual-command-mode
