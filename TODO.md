@@ -11,3 +11,4 @@
  - https://github.com/manute/gorepl-mode
  - https://github.com/karthink/gptel
  - https://www.orgroam.com/
+ - https://github.com/mickeynp/combobulate (https://www.masteringemacs.org/article/combobulate-structured-movement-editing-treesitter)
