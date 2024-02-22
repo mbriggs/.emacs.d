@@ -406,10 +406,7 @@
   :bind (:map dired-mode-map
 	      ("/" . dired-narrow))
   :ensure t
-  :after dired
-  :defines dired-narrow-exit-action
-  :config
-  (setq dired-narrow-exit-action 'dired-find-file))
+  :after dired)
 
 (use-package flymake ; on the fly syntax checking
   :hook (prog-mode . flymake-mode))

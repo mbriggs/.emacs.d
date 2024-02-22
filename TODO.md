@@ -2,6 +2,7 @@
  - change comparison highlighting
  - how to resolve
  - change prefix
+- store autosaves in a dir
 - packages
  - https://github.com/meow-edit/meow
  - https://github.com/wbolster/emacs-direnv
