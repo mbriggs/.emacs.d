@@ -10,7 +10,7 @@ osascript -e 'tell application "Finder" to make alias file to posix file "/opt/h
 echo "disabling C-M-d"
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
 echo "installing fonts"
-cp ./font/*.ttf ~/Library/Font
+cp ./font/*.ttf ~/Library/Fonts
 echo "cloning copilot.el"
 . ./copilot.sh
 echo "installing lsp servers"

@@ -493,13 +493,53 @@
   :functions editorconfig-mode
   :hook (prog-mode . editorconfig-mode))
 
-(use-package treesit-auto ; auto download and install treesitter grammars
-  :ensure t
-  :functions (treesit-auto-install treesit-auto-add-to-auto-mode-alist global-treesit-auto-mode)  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+(use-package treesit ; emacs tree sitter
+  ;; :disabled
+  :defer t
+
+  :mode (("\\.tsx\\'" . tsx-ts-mode)
+	 ("\\.ts\\'" . tsx-ts-mode))
+
+  :custom
+  (font-lock-maximum-decoration t)
+  (treesit-font-lock-level 4)
+
+  :init
+  (setq major-mode-remap-alist
+	'((bash-mode . bash-ts-mode)
+	  (javascript-mode . tsx-ts-mode)
+	  (ruby-mode . ruby-ts-mode)
+	  (html-mode . html-ts-mode)
+	  (shell-script-mode . bash-ts-mode)
+	  (typescript-mode . tsx-ts-mode)
+	  (json-mode . json-ts-mode)
+	  (css-mode . css-ts-mode)
+	  (python-mode . python-ts-mode)))
+
+  (setopt treesit-language-source-alist
+	  '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+	    (cmake "https://github.com/uyha/tree-sitter-cmake")
+	    (css "https://github.com/tree-sitter/tree-sitter-css")
+	    (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
+	    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+	    (go "https://github.com/tree-sitter/tree-sitter-go")
+	    (html "https://github.com/tree-sitter/tree-sitter-html")
+	    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+	    (json "https://github.com/tree-sitter/tree-sitter-json")
+	    (make "https://github.com/alemuller/tree-sitter-make")
+	    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+	    (python "https://github.com/tree-sitter/tree-sitter-python")
+	    (toml "https://github.com/tree-sitter/tree-sitter-toml")
+	    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src")
+	    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src")
+	    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+  (defun mb-install-all-treesit-langs ()
+    "Install all treesit languages."
+    (interactive)
+    (dolist (lang (mapcar #'car treesit-language-source-alist))
+      (treesit-install-language-grammar lang))
+    (message "All treesit languages installed")))
 
 (use-package markdown-mode ; markdown mode
   :ensure t)
@@ -541,8 +581,8 @@
   ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
   ;;       orderless-component-separator #'orderless-escapable-split-on-space)
   (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia ; annotations in minibuffer
   :ensure t
@@ -592,65 +632,65 @@
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
 	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+		 nil
+		 (window-parameters (mode-line-format . none)))))
 
 
 (use-package consult ; consult is a replacement for the default Emacs completing read
   :ensure t
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
-         ("C-c M-x" . consult-mode-command)
-         ("C-c h" . consult-history)
-         ("C-c k" . consult-kmacro)
-         ("C-c m" . consult-man)
-         ("C-c i" . consult-info)
-         ([remap Info-search] . consult-info)
-         ;; C-x bindings in `ctl-x-map'
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
-         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ;; M-g bindings in `goto-map'
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings in `search-map'
-         ("M-s d" . consult-fd)
-         ("M-s c" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-         ;; Minibuffer history
-         :map minibuffer-local-map
-         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+	 ("C-c M-x" . consult-mode-command)
+	 ("C-c h" . consult-history)
+	 ("C-c k" . consult-kmacro)
+	 ("C-c m" . consult-man)
+	 ("C-c i" . consult-info)
+	 ([remap Info-search] . consult-info)
+	 ;; C-x bindings in `ctl-x-map'
+	 ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+	 ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+	 ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+	 ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+	 ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+	 ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+	 ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+	 ;; Custom M-# bindings for fast register access
+	 ("M-#" . consult-register-load)
+	 ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+	 ("C-M-#" . consult-register)
+	 ;; Other custom bindings
+	 ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+	 ;; M-g bindings in `goto-map'
+	 ("M-g e" . consult-compile-error)
+	 ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+	 ("M-g g" . consult-goto-line)             ;; orig. goto-line
+	 ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+	 ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+	 ("M-g m" . consult-mark)
+	 ("M-g k" . consult-global-mark)
+	 ("M-g i" . consult-imenu)
+	 ("M-g I" . consult-imenu-multi)
+	 ;; M-s bindings in `search-map'
+	 ("M-s d" . consult-fd)
+	 ("M-s c" . consult-locate)
+	 ("M-s g" . consult-grep)
+	 ("M-s G" . consult-git-grep)
+	 ("M-s r" . consult-ripgrep)
+	 ("M-s l" . consult-line)
+	 ("M-s L" . consult-line-multi)
+	 ("M-s k" . consult-keep-lines)
+	 ("M-s u" . consult-focus-lines)
+	 ;; Isearch integration
+	 ("M-s e" . consult-isearch-history)
+	 :map isearch-mode-map
+	 ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+	 ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+	 ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+	 ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+	 ;; Minibuffer history
+	 :map minibuffer-local-map
+	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+	 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
@@ -666,7 +706,7 @@
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
   (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+	register-preview-function #'consult-register-format)
 
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
@@ -674,7 +714,7 @@
 
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+	xref-show-definitions-function #'consult-xref)
 
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
@@ -768,22 +808,22 @@
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-elisp-symbol)
-         ("C-c p e" . cape-elisp-block)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p :" . cape-emoji)
-         ("C-c p \\" . cape-tex)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
+	 ("C-c p t" . complete-tag)        ;; etags
+	 ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+	 ("C-c p h" . cape-history)
+	 ("C-c p f" . cape-file)
+	 ("C-c p k" . cape-keyword)
+	 ("C-c p s" . cape-elisp-symbol)
+	 ("C-c p e" . cape-elisp-block)
+	 ("C-c p a" . cape-abbrev)
+	 ("C-c p l" . cape-line)
+	 ("C-c p w" . cape-dict)
+	 ("C-c p :" . cape-emoji)
+	 ("C-c p \\" . cape-tex)
+	 ("C-c p _" . cape-tex)
+	 ("C-c p ^" . cape-tex)
+	 ("C-c p &" . cape-sgml)
+	 ("C-c p r" . cape-rfc1345))
   :init
   ;; Add to the global default value of `completion-at-point-functions' which is
   ;; used by `completion-at-point'.  The order of the functions matters, the
