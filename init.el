@@ -114,6 +114,12 @@
    completions-group t ; group completions
    )
 
+  ;; Create the backup and autosave directories if they don't exist
+  (dolist (dir '("backups" "autosave"))
+    (let ((path (expand-file-name dir user-emacs-directory)))
+      (unless (file-exists-p path)
+	(make-directory path))))
+
   ;; Contrary to what many Emacs users have in their configs, you don't need more
   ;; than this to make UTF-8 the default coding system:
   (set-language-environment "UTF-8")
@@ -126,12 +132,12 @@
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
+	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
   (setq read-extended-command-predicate
-        #'command-completion-default-include-p)
+	#'command-completion-default-include-p)
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
