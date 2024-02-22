@@ -287,6 +287,8 @@
   (whole-line-or-region-global-mode))
 
 (use-package tab-bar ; enable the tab-bar
+  :bind (("M-`" . tab-bar-switch-to-next-tab)
+	 ("M-~" . tab-bar-switch-to-prev-tab))
   :init
   (setopt tab-bar-show 1)
   :config
