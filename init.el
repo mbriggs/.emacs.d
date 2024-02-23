@@ -199,7 +199,8 @@
   :functions mb-op-register-reference
   :commands mb-op-read
   :config
-  (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential"))
+  (mb-op-register-reference 'gist-token "op://Personal/lrian52eh4tkos2lgabjmkh6ve/credential")
+  (mb-op-register-reference 'gpt-api-key "op://Personal/ChatGPT API Key/credential"))
 
 (use-package jist ; gist integration
   :bind ("C-x g j" . jist-dwim)
@@ -470,6 +471,15 @@
 		  ("TOML" prettierd)
 		  ("GraphQL" prettierd))))
 
+(use-package gptel ; chatgpt
+  :ensure t
+  :commands (gptel-send gptel)
+  :bind ("C-c RET" . gptel-send)
+  :defines gptel-api-key
+  :config
+  (setq gptel-api-key (mb-op-read 'gpt-api-key)))
+
+
 (use-package copilot ; code completion using llvm
   :after (editorconfig dash s jsonrpc)
   :load-path ".copilot"
@@ -544,6 +554,7 @@
 	    (make "https://github.com/alemuller/tree-sitter-make")
 	    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
 	    (python "https://github.com/tree-sitter/tree-sitter-python")
+	    (embedded-template "https://github.com/tree-sitter/tree-sitter-embedded-template")
 	    (toml "https://github.com/tree-sitter/tree-sitter-toml")
 	    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src")
 	    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src")
@@ -904,7 +915,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

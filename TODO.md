@@ -3,12 +3,13 @@
  - how to resolve
  - change prefix
 - packages
+ - https://github.com/gregoryg/AIPIHKAL
+ - https://github.com/jacktasia/dumb-jump
  - https://github.com/meow-edit/meow
  - https://github.com/wbolster/emacs-direnv
  - https://github.com/svaante/dape
  - https://www.emacswiki.org/emacs/ParEdit
  - https://github.com/dougm/goflymake
  - https://github.com/manute/gorepl-mode
- - https://github.com/karthink/gptel
  - https://www.orgroam.com/
  - https://github.com/mickeynp/combobulate (https://www.masteringemacs.org/article/combobulate-structured-movement-editing-treesitter)
