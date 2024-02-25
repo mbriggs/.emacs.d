@@ -471,14 +471,31 @@
 		  ("TOML" prettierd)
 		  ("GraphQL" prettierd))))
 
+(use-package org ; org mode
+  :bind (("C-c a" . org-agenda)
+	 ("C-c c" . org-capture))
+  :config
+  (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
+  (setopt org-agenda-files (expand-file-name "org/journal" "~"))
+  (setopt org-capture-templates
+	  `(("m" "Meeting" entry ()))
+	  ))
+
+(use-package org-transclusion ; embedding in org
+  :ensure t
+  :after org
+  :hook (org-mode . org-transclusion-mode))
+
 (use-package gptel ; chatgpt
   :ensure t
   :commands (gptel-send gptel)
   :bind ("C-c RET" . gptel-send)
-  :defines gptel-api-key
+  :hook (gptel-mode . visual-line-mode)
   :config
-  (setq gptel-api-key (mb-op-read 'gpt-api-key)))
-
+  (setopt
+   gptel-api-key (mb-op-read 'gpt-api-key)
+   gptel-default-mode 'org-mode
+   gptel-model "gpt-4-turbo-preview"))
 
 (use-package copilot ; code completion using llvm
   :after (editorconfig dash s jsonrpc)
@@ -716,13 +733,14 @@
 	 ;; Minibuffer history
 	 :map minibuffer-local-map
 	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-	 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+	 ("M-r" . consult-history)
+	 :map org-mode-map
+	 ("M-g o" . consult-org-heading))                ;; orig. previous-matching-history-element
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
-  :defines (consult-project-function consult-ripgrep-command consult-git-grep-command consult-grep-command consult-bookmark-command consult-recent-file-command consult-xref-command consult-register-command consult-customize xref-show-xrefs-function xref-show-definitions-function register-preview-delay register-preview-function consult-preview-key consult-narrow-key consult-narrow-map consult-project-function consult-theme consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file consult-xref consult--source-bookmark consult--source-file-register consult--source-recent-file consult--source-project-recent-file consult-register-format consult-register-window consult-customize)
   :functions (consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file consult-xref consult-register-format consult-register-window consult-customize)
 
   ;; The :init configuration is always executed (Not lazy)
@@ -745,26 +763,9 @@
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
   :config
-
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key "M-.")
-  ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-file-register
-   consult--source-recent-file consult--source-project-recent-file
-   ;; :preview-key "M-."
-   :preview-key '(:debounce 0.4 any))
-
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; "C-+"
+  (setopt consult-narrow-key "<") ;; "C-+"
 
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
@@ -773,29 +774,17 @@
 
 (use-package corfu ; in-buffer completion framework
   :ensure t
-  :functions global-corfu-mode
-  ;; Optional customizations
-  ;; :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; Enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
+  :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
+  :functions (corfu-mode global-corfu-mode)
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+
+  (defun corfu-enable-in-minibuffer ()
+    "Enable Corfu in the minibuffer."
+    (when (local-variable-p 'completion-at-point-functions)
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil)
+      (corfu-mode 1))))
 
 (use-package corfu-popupinfo ; documentation popup
   :after corfu
@@ -914,8 +903,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files '("/Users/matt/org/journal/2024-01-01.org"))
  '(package-selected-packages
-   '(gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
