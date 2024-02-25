@@ -1,0 +1,38 @@
+* Built-in
+** smerge
+- learn smerge
+  - change comparison highlighting
+  - how to resolve
+  - change prefix
+
+* Projects
+
+** org for notes
+
+*** TODO learn org
+https://www.youtube.com/watch?v=sQS06Qjnkcc&list=PLVtKhBrRV_ZkPnBtt_TD1Cs9PJlU0IIdE&index=1
+
+*** TODO org packages
+- https://www.orgroam.com/
+ - https://d12frosted.io/posts/2021-01-16-task-management-with-roam-vol5.html
+ - https://www.reddit.com/r/emacs/comments/kewl3a/how_are_folks_using_orgagenda_and_orgroam_together/
+   https://github.com/alphapapa/org-ql/issues/303#issuecomment-1374858219
+   https://github.com/ahmed-shariff/org-roam-ql
+- https://github.com/alphapapa/org-ql
+- https://github.com/nobiot/org-transclusion
+
+*** notes
+
+
+* Packages
+  - https://github.com/gregoryg/AIPIHKAL
+  - https://github.com/jacktasia/dumb-jump
+  - https://github.com/meow-edit/meow
+  - https://github.com/wbolster/emacs-direnv
+  - https://github.com/svaante/dape
+  - https://www.emacswiki.org/emacs/ParEdit
+  - https://github.com/dougm/goflymake
+  - https://github.com/manute/gorepl-mode
+  - https://github.com/mickeynp/combobulate (https://www.masteringemacs.org/article/combobulate-structured-movement-editing-treesitter)
+
+    
