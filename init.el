@@ -681,6 +681,7 @@
 
 (use-package consult ; consult is a replacement for the default Emacs completing read
   :ensure t
+  :requires org
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
 	 ("C-c M-x" . consult-mode-command)
