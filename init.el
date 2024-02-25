@@ -473,7 +473,9 @@
 
 (use-package org ; org mode
   :bind (("C-c a" . org-agenda)
-	 ("C-c c" . org-capture))
+	 ("C-c c" . org-capture)
+	 :map org-mode-map
+	 ("M-g o" . consult-org-heading))
   :config
   (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
   (setopt org-agenda-files (expand-file-name "org/journal" "~"))
@@ -681,8 +683,6 @@
 
 (use-package consult ; consult is a replacement for the default Emacs completing read
   :ensure t
-  :requires org
-  ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
 	 ("C-c M-x" . consult-mode-command)
 	 ("C-c h" . consult-history)
@@ -734,9 +734,7 @@
 	 ;; Minibuffer history
 	 :map minibuffer-local-map
 	 ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-	 ("M-r" . consult-history)
-	 :map org-mode-map
-	 ("M-g o" . consult-org-heading))                ;; orig. previous-matching-history-element
+	 ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
