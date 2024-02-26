@@ -25,9 +25,11 @@
 
 (use-package emacs ; core configuration
   :bind (("M-o" . project-find-file)
-	 ("M-O" . other-window)
-	 ("M-e" . consult-project-buffer)
-	 ("M-E" . consult-buffer))
+	 ("M-E" . consult-project-buffer)
+	 ("M-e" . consult-buffer)
+	 ("M-s r" . query-replace)
+	 ("M-s R" . query-replace-regexp)
+	 ("M-s s" . isearch))
 
   :config
 
