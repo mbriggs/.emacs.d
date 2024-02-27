@@ -483,6 +483,7 @@
 	 ("C-c c" . org-capture)
 	 :map org-mode-map
 	 ("M-g o" . consult-org-heading))
+  :hook ((org-mode . visual-line-mode))
   :functions (logbook-entry-subheading)
   :config
   (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406

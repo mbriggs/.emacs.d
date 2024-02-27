@@ -21,7 +21,7 @@
 
 ;; Configuration
 
-(defvar logbook-dir "~/org/logbook"
+(defvar logbook-dir "~/Documents/org/logbook"
   "The file to store the logbook in.")
 
 (defvar logbook-file-format "%Y-%m-%b"
@@ -46,7 +46,8 @@ If ARG is non-nil, open in current window."
 If ARG is non-nil, open in current window."
   (interactive "P")
   (logbook-visit (current-time) arg)
-  (logbook-goto-entry (current-time)))
+  (logbook-goto-entry (current-time))
+  (window-resize (selected-window) (- 100 (window-width)) t))
 
 ;; Functions
 
@@ -205,10 +206,7 @@ will return to where it was before invoking this function."
   "Insert a new entry for TIME."
   (insert (logbook--header time))
   (logbook--write-created time)
-  (org-end-of-meta-data)
-  (insert
-   "** Notes\n"
-   "** Meetings\n"))
+  (org-end-of-meta-data))
 
 (defun logbook--header (time)
   "Return the header for the logbook entry for TIME."
