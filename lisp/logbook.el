@@ -136,7 +136,11 @@ at the top of the file."
       (newline)
       (forward-line -1)
       (logbook--insert-entry time)
-      (org-goto-sibling 1))))
+      (org-goto-sibling 1))
+
+    ;; ensure current entry is visible
+    (org-fold-show-children)))
+
 
 (defun logbook-entry-subheading (time heading)
   "Insert or go to a new HEADING as a child of TIME entry."

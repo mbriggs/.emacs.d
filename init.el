@@ -296,7 +296,7 @@
   (whole-line-or-region-global-mode))
 
 (use-package logbook ; logbook for org mode
-  :after org
+  :commands logbook-today
   :bind ("M-l" . logbook-today))
 
 (use-package tab-bar ; enable the tab-bar
