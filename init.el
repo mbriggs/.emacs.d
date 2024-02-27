@@ -478,17 +478,27 @@
 		  ("GraphQL" prettierd))))
 
 (use-package org ; org mode
+  :requires logbook
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
 	 :map org-mode-map
 	 ("M-g o" . consult-org-heading))
+  :functions (logbook-entry-subheading)
   :config
   (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
-  (setopt org-agenda-files (expand-file-name "org/journal" "~"))
   (setopt org-tags-column -77)
   (setopt org-capture-templates
-	  `(("m" "Meeting" entry ()))
-	  ))
+	  `(("m" "Meeting" entry (function)))
+	  )
+
+  (use-package org-ql
+    :ensure t)
+
+  (defun mb-logbook-meeting ()
+    "Log a meeting."
+    (interactive)
+    (logbook-today nil)
+    (logbook-entry-subheading (current-time) "Meetings")))
 
 (use-package org-transclusion ; embedding in org
   :ensure t
@@ -911,7 +921,7 @@
  ;; If there is more than one, they won't work right.
  '(org-agenda-files '("/Users/matt/org/journal/2024-01-01.org"))
  '(package-selected-packages
-   '(tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
