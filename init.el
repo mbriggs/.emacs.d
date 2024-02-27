@@ -485,6 +485,7 @@
   :config
   (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
   (setopt org-agenda-files (expand-file-name "org/journal" "~"))
+  (setopt org-tags-column -77)
   (setopt org-capture-templates
 	  `(("m" "Meeting" entry ()))
 	  ))
