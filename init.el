@@ -383,9 +383,12 @@
 (use-package doom-modeline ; fancy modeline
   :ensure t
   :functions doom-modeline-mode
-  :defines doom-modeline-project-detection
   :config
-  (setq doom-modeline-project-detection 'project)
+  (setopt
+   doom-modeline-project-detection 'project
+   doom-modeline-buffer-file-name-style 'relative-from-project
+   doom-modeline-buffer-state-icon nil
+   )
   (display-time-mode -1)
   (doom-modeline-mode 1))
 
