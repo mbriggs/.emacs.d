@@ -481,28 +481,23 @@
 		  ("GraphQL" prettierd))))
 
 (use-package org ; org mode
-  :requires logbook
+  :requires (logbook org-ql)
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
 	 :map org-mode-map
-	 ("M-g o" . consult-org-heading))
+	 ("M-g o" . consult-org-heading)
+	 ("M-g l" . org-ql-open-link))
   :hook ((org-mode . visual-line-mode))
   :functions (logbook-entry-subheading)
   :config
-  (setopt org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
-  (setopt org-tags-column -77)
-  (setopt org-capture-templates
-	  `(("m" "Meeting" entry (function)))
-	  )
+  (setopt
+   org-element-use-cache nil ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
+   org-tags-column -77
+   org-directory (expand-file-name "~/Documents/org")
+   org-agenda-files (list org-directory)))
 
-  (use-package org-ql
-    :ensure t)
-
-  (defun mb-logbook-meeting ()
-    "Log a meeting."
-    (interactive)
-    (logbook-today nil)
-    (logbook-entry-subheading (current-time) "Meetings")))
+(use-package org-ql
+  :ensure t)
 
 (use-package org-transclusion ; embedding in org
   :ensure t
