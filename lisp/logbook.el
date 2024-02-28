@@ -189,7 +189,7 @@ will return to where it was before invoking this function."
 
     ;; next sibling until we find an entry or run out of siblings
     (while (and searching
-		(org-goto-sibling t)
+		(org-goto-sibling)
 		(null (logbook-entry-p))))
 
     ;; we either ran out of siblings or found an entry. In either case, we're done
