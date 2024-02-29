@@ -95,7 +95,7 @@
    inhibit-startup-screen t ; No splash screen
    sentence-end-double-space nil ; Don't require two spaces to end a sentence
    backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))) ; Store backups in a separate directory
-   auto-save-file-name-transforms `((".*" ,(expand-file-name "autosave" user-emacs-directory) t)) ; Store autosaves in a separate directory
+   auto-save-file-name-transforms `((".*" ,(concat (expand-file-name "autosave" user-emacs-directory) "/\\1") t)) ; Store autosaves in a separate directory
    backup-by-copying t ; Copy files when backing up
    delete-old-versions t ; Delete old versions of files
    kept-new-versions 6 ; Keep 6 new versions
