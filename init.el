@@ -600,7 +600,8 @@
   :defer t
 
   :mode (("\\.tsx\\'" . tsx-ts-mode)
-	 ("\\.ts\\'" . tsx-ts-mode))
+	 ("\\.ts\\'" . tsx-ts-mode)
+	 ("\\.go\\'" . go-ts-mode))
 
   :custom
   (font-lock-maximum-decoration t)
@@ -612,6 +613,7 @@
 	  (javascript-mode . tsx-ts-mode)
 	  (ruby-mode . ruby-ts-mode)
 	  (html-mode . html-ts-mode)
+	  (go-mode . go-ts-mode)
 	  (shell-script-mode . bash-ts-mode)
 	  (typescript-mode . tsx-ts-mode)
 	  (json-mode . json-ts-mode)
@@ -625,13 +627,13 @@
 	    (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
 	    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
 	    (go "https://github.com/tree-sitter/tree-sitter-go")
+	    (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
 	    (html "https://github.com/tree-sitter/tree-sitter-html")
 	    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
 	    (json "https://github.com/tree-sitter/tree-sitter-json")
 	    (make "https://github.com/alemuller/tree-sitter-make")
 	    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
 	    (python "https://github.com/tree-sitter/tree-sitter-python")
-	    (embedded-template "https://github.com/tree-sitter/tree-sitter-embedded-template")
 	    (toml "https://github.com/tree-sitter/tree-sitter-toml")
 	    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src")
 	    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src")
