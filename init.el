@@ -481,7 +481,6 @@
 		  ("GraphQL" prettierd))))
 
 (use-package org ; org mode
-  :requires (logbook org-ql)
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
 	 :map org-mode-map
@@ -489,15 +488,14 @@
 	 ("M-g l" . org-ql-open-link))
   :hook ((org-mode . visual-line-mode))
   :functions (logbook-entry-subheading)
-  :defines (org-agenda-custom-commands)
+  :defines (org-agenda-custom-commands org-refile-targets)
+  :custom
+  (org-element-use-cache nil) ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
+  (org-tags-column -77)
+  (org-directory (expand-file-name "~/Documents/org"))
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   :config
-  (setopt
-   org-element-use-cache nil ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
-   org-tags-column -77
-   org-directory (expand-file-name "~/Documents/org")
-   org-agenda-files (list org-directory)
-   org-refile-targets '((org-agenda-files :maxlevel . 3)))
-
+  (setopt org-agenda-files (list org-directory))
   (let ((weekly '(org-ql-block '(and (not (done))
 				     (or (not (deadline))
 					 (deadline :before "tomorrow"))
@@ -539,12 +537,8 @@
 					(,weekly ,now ,pending ,pending-discuss ))))))
 
 (use-package org-ql
+  :requires org
   :ensure t)
-
-(use-package org-transclusion ; embedding in org
-  :ensure t
-  :after org
-  :hook (org-mode . org-transclusion-mode))
 
 (use-package gptel ; chatgpt
   :ensure t
@@ -962,7 +956,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files '("/Users/matt/org/journal/2024-01-01.org"))
+ '(org-agenda-files nil)
  '(package-selected-packages
    '(org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
