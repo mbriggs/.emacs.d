@@ -835,6 +835,7 @@
   :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
   :functions (corfu-mode global-corfu-mode)
   :init
+  (setopt corfu-auto t)
   (global-corfu-mode)
 
   (defun corfu-enable-in-minibuffer ()
