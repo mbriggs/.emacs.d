@@ -489,12 +489,54 @@
 	 ("M-g l" . org-ql-open-link))
   :hook ((org-mode . visual-line-mode))
   :functions (logbook-entry-subheading)
+  :defines (org-agenda-custom-commands)
   :config
   (setopt
    org-element-use-cache nil ; org-journal has a bug https://github.com/bastibe/org-journal/issues/406
    org-tags-column -77
    org-directory (expand-file-name "~/Documents/org")
-   org-agenda-files (list org-directory)))
+   org-agenda-files (list org-directory)
+   org-refile-targets '((org-agenda-files :maxlevel . 3)))
+
+  (let ((weekly '(org-ql-block '(and (not (done))
+				     (or (not (deadline))
+					 (deadline :before "tomorrow"))
+				     (or (not (scheduled))
+					 (scheduled :before "tomorrow"))
+				     (todo "WEEKLY"))
+			       ((org-ql-block-header "= 📅 TODO Weekly 📅 ="))))
+
+	(now  '(org-ql-block '(and (not (done))
+				   (or (todo "NOW")
+				       (deadline :before "tomorrow"))
+				   (or (not (scheduled))
+				       (scheduled :before "tomorrow"))
+				   (not (todo "WEEKLY")))
+			     ((org-ql-block-header "= ⭐️ TODO Now ⭐️ ="))))
+	(pending '(org-ql-block '(and (not (done))
+				      (or (not (deadline))
+					  (deadline :before "tomorrow"))
+				      (or (not (scheduled))
+					  (scheduled :before "tomorrow"))
+				      (not (todo "WEEKLY"))
+				      (not (todo "NOW"))
+				      (not (todo "DISCUSS"))
+				      (todo))
+				((org-ql-block-header "= 📌 Pending 📌 ="))))
+
+	(pending-discuss '(org-ql-block '(and (todo "DISCUSS")
+					      (not (done))
+					      (or (not (deadline))
+						  (deadline :before "tomorrow"))
+					      (or (not (scheduled))
+						  (scheduled :before "tomorrow")))
+					((org-ql-block-header "= 🙊 Pending Discussion 🙊 =")))))
+
+    (setq org-agenda-custom-commands `(("d" "Daily agenda"
+
+					(,weekly ,now))
+				       ("p" "Planning"
+					(,weekly ,now ,pending ,pending-discuss ))))))
 
 (use-package org-ql
   :ensure t)
