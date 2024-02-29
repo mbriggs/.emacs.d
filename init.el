@@ -29,7 +29,7 @@
 	 ("M-e" . consult-buffer)
 	 ("M-s r" . query-replace)
 	 ("M-s R" . query-replace-regexp)
-	 ("M-s s" . isearch))
+	 ("M-s s" . isearch-forward))
 
   :config
 
@@ -777,9 +777,8 @@
 	 ;; M-s bindings in `search-map'
 	 ("M-s d" . consult-fd)
 	 ("M-s c" . consult-locate)
-	 ("M-s g" . consult-grep)
 	 ("M-s G" . consult-git-grep)
-	 ("M-s r" . consult-ripgrep)
+	 ("M-s g" . consult-ripgrep)
 	 ("M-s l" . consult-line)
 	 ("M-s L" . consult-line-multi)
 	 ("M-s k" . consult-keep-lines)
