@@ -21,10 +21,10 @@
 
 ;; Configuration
 
-(defvar logbook-dir "~/Documents/org/logbook"
+(defvar logbook-dir org-directory
   "The file to store the logbook in.")
 
-(defvar logbook-file-format "%Y-%m-%b"
+(defvar logbook-file-format "logbook"
   "The format to use for the logbook file name.")
 
 (defvar logbook-date-format "%A, %b-%d-%Y"
