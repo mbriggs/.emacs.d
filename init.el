@@ -494,6 +494,7 @@
   (org-tags-column -77)
   (org-directory (expand-file-name "~/Documents/org"))
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (org-return-follows-link t)
   :config
   (setopt org-agenda-files (list org-directory))
   (let ((weekly '(org-ql-block '(and (not (done))
