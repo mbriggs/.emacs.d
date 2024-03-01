@@ -295,10 +295,6 @@
   :config
   (whole-line-or-region-global-mode))
 
-(use-package logbook ; logbook for org mode
-  :commands logbook-today
-  :bind ("M-l" . logbook-today))
-
 (use-package tab-bar ; enable the tab-bar
   :bind (("M-`" . tab-bar-switch-to-next-tab)
 	 ("M-~" . tab-bar-switch-to-prev-tab))
@@ -532,7 +528,6 @@
 					((org-ql-block-header "= 🙊 Pending Discussion 🙊 =")))))
 
     (setq org-agenda-custom-commands `(("d" "Daily agenda"
-
 					(,weekly ,now))
 				       ("p" "Planning"
 					(,weekly ,now ,pending ,pending-discuss ))))))
@@ -540,6 +535,10 @@
 (use-package org-ql
   :requires org
   :ensure t)
+
+(use-package logbook ; the way i org
+  :commands logbook-today
+  :bind ("M-l" . logbook-today))
 
 (use-package gptel ; chatgpt
   :ensure t
@@ -551,26 +550,6 @@
    gptel-api-key (mb-op-read 'gpt-api-key)
    gptel-default-mode 'org-mode
    gptel-model "gpt-4-turbo-preview"))
-
-(use-package copilot ; code completion using llvm
-  :after (editorconfig dash s jsonrpc)
-  :load-path ".copilot"
-  :commands copilot-mode
-  :hook ((prog-mode . copilot-mode)
-	 (copilot-mode . (lambda ()
-			   (setq-local copilot--indent-warning-printed-p t))))
-  :defines (copilot-indentation-alist copilot-completion-map)
-  :bind (
-	 :map copilot-completion-map
-	 ("M-;" . copilot-accept-completion)
-	 ("C-TAB" . copilot-accept-completion-by-word)
-	 ("C-<tab>" . copilot-accept-completion-by-word)
-	 ("C-S-<tab>" . copilot-accept-completion-by-line)
-	 )
-  :config
-  (add-to-list 'copilot-indentation-alist
-	       '(lisp-interaction-mode . (lambda () (current-column)))
-	       '(emacs-lisp-mode . (lambda () (current-column)))))
 
 (use-package dash ; list manipulation lib
   :ensure t)
@@ -830,7 +809,6 @@
   :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
   :functions (corfu-mode global-corfu-mode)
   :init
-  (setopt corfu-auto t)
   (global-corfu-mode)
 
   (defun corfu-enable-in-minibuffer ()
