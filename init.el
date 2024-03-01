@@ -476,6 +476,15 @@
 		  ("TOML" prettierd)
 		  ("GraphQL" prettierd))))
 
+(use-package avy ; jump to thing on screen
+  :ensure t
+  :bind (("M-;" . avy-goto-char-timer)
+	 ("M-g l" . avy-goto-line)
+	 :map isearch-mode-map
+	 ("C-'" . avy-isearch))
+  :custom
+  (avy-timeout-seconds 0.5))
+
 (use-package org ; org mode
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
@@ -937,7 +946,7 @@
  ;; If there is more than one, they won't work right.
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
