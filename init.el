@@ -163,6 +163,9 @@
     (select-window (get-lru-window)))
   )
 
+(use-package windmove
+  :hook (after-init . windmove-default-keybindings))
+
 (use-package show-paren ; show matching parens
   :hook (prog-mode . show-paren-mode))
 
@@ -479,7 +482,6 @@
 (use-package avy ; jump to thing on screen
   :ensure t
   :bind (("M-;" . avy-goto-char-timer)
-	 ("C-M-;" . avy-resume)
 	 ("M-g l" . avy-goto-line)
 	 :map isearch-mode-map
 	 ("C-'" . avy-isearch))
@@ -489,10 +491,13 @@
 (use-package org ; org mode
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture)
+	 ("C-c L" . org-store-link)
 	 :map org-mode-map
 	 ("M-g o" . consult-org-heading)
-	 ("M-g l" . org-ql-open-link))
-  :hook ((org-mode . visual-line-mode))
+	 ("M-g l" . org-ql-open-link)
+	 ("C-M-<return>" . org-insert-todo-heading-respect-content))
+  :hook ((org-mode . visual-line-mode)
+	 (after-save . mb--auto-update-org-tags))
   :functions (logbook-entry-subheading)
   :defines (org-agenda-custom-commands org-refile-targets)
   :custom
@@ -503,6 +508,14 @@
   (org-return-follows-link t)
   :config
   (setopt org-agenda-files (list org-directory))
+  (defun mb--auto-update-org-tags ()
+    "Automatically update TAGS when saving org files int he org-directory"
+    (when (eq major-mode 'org-mode)
+      (let ((org-dir (expand-file-name org-directory))
+	    (filename (buffer-file-name)))
+	(when (and filename (string-prefix-p org-dir filename))
+	  (start-process "update-org-tags" nil "ctags" "-Re" "--langmap=org:.org" org-dir)))))
+
   (let ((weekly '(org-ql-block '(and (not (done))
 				     (or (not (deadline))
 					 (deadline :before "tomorrow"))
