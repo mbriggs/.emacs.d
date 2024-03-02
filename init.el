@@ -285,8 +285,9 @@
   :init
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
-  :config
-  (setopt eat-kill-buffer-on-exit t))
+  :custom
+  (eat-kill-buffer-on-exit t)
+  (eat-term-name "xterm-256color"))
 
 (use-package highlight-defined ; highlight defined symbols
   :ensure t
@@ -913,7 +914,10 @@ targets."
   :commands eshell
   :bind (
 	 :map eshell-mode-map
-	 ("C-r" . consult-history)))
+	 ("C-r" . consult-history))
+  :custom
+  (eshell-visual-subcommands '(("rails" "s" "server" "c" "console" "dbconsole")
+			       ("docker" "compose"))))
 
 (use-package cape ; completion at point extensions
   :ensure t
