@@ -23,6 +23,29 @@
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
+(use-package isearch
+  :bind (("C-s" . isearch)
+	 ("M-s s" . isearch)
+	 :map isearch-mode-map
+	 ("C-s" . mb-isearch-repeat-forward)
+	 ("C-r" . mb-isearch-reapeat-backward))
+  :init
+  (defun mb-isearch-repeat-forward ()
+    (interactive)
+    (unless isearch-forward
+      (goto-char isearch-other-end))
+    (isearch-repeat-forward)
+    (unless isearch-success
+      (isearch-repeat-forward)))
+
+  (defun mb-isearch-repeat-backward ()
+    (interactive)
+    (when (and isearch-forward isearch-other-end)
+      (goto-char isearch-other-end))
+    (isearch-repeat-backward)
+    (unless isearch-success
+      (isearch-repeat-backward))))
+
 (use-package emacs ; core configuration
   :bind (("M-o" . project-find-file)
 	 ("M-E" . consult-project-buffer)
@@ -418,6 +441,10 @@
   :init
   (setopt dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\..*$"))
 
+(use-package diredfl
+  :ensure t
+  :hook (dired-mode . diredfl-mode))
+
 (use-package dired-narrow ; filter dired
   :bind (:map dired-mode-map
 	      ("/" . dired-narrow))
@@ -459,26 +486,27 @@
   :hook ((prog-mode . format-all-mode)
 	 (format-all-mode . format-all-ensure-formatter))
   :ensure t
-  :config
-  (setq-default format-all-formatters
-		'(("CSS" prettierd)
-		  ("HTML" prettierd)
-		  ("JavaScript" prettierd)
-		  ("JSON" prettierd)
-		  ("JSON5" prettierd)
-		  ("JSX" prettierd)
-		  ("SCSS" prettierd)
-		  ("TSX" prettierd)
-		  ("Markdown" prettierd)
-		  ("Ruby" rubocop)
-		  ("Shell" shfmt)
-		  ("SQL" pg_format)
-		  ("TypeScript" prettierd)
-		  ("YAML" prettierd)
-		  ("Go" gofmt)
-		  ("Svelte" prettierd)
-		  ("TOML" prettierd)
-		  ("GraphQL" prettierd))))
+  :custom
+  (format-all-formatters
+   '(("CSS" prettierd)
+     ("HTML+ERB" prettierd)
+     ("HTML" prettierd)
+     ("JavaScript" prettierd)
+     ("JSON" prettierd)
+     ("JSON5" prettierd)
+     ("JSX" prettierd)
+     ("SCSS" prettierd)
+     ("TSX" prettierd)
+     ("Markdown" prettierd)
+     ("Ruby" rubocop)
+     ("Shell" shfmt)
+     ("SQL" pg_format)
+     ("TypeScript" prettierd)
+     ("YAML" prettierd)
+     ("Go" gofmt)
+     ("Svelte" prettierd)
+     ("TOML" prettierd)
+     ("GraphQL" prettierd))))
 
 (use-package avy ; jump to thing on screen
   :ensure t
@@ -488,6 +516,10 @@
 	 ("C-'" . avy-isearch))
   :custom
   (avy-timeout-seconds 0.5))
+
+(use-package dumb-jump ; jump to definition using rg
+  :ensure t
+  :hook ((xref-backend-functions . dumb-jump-xref-activate)))
 
 (use-package org ; org mode
   :bind (("C-c a" . org-agenda)
@@ -1006,7 +1038,7 @@ targets."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
