@@ -304,13 +304,22 @@
 (use-package eat ; use eshell for most stuff, eat for tui style
   :ensure t
   :functions eat-eshell-mode eat-eshell-visual-command-mode
+  :defines eat-mode-map eat-semi-char-non-bound-keys
   :commands eat-eshell-mode eat-eshell-visual-command-mode
+  :bind (:map eat-mode-map
+	      ("M-e" . consult-buffer)
+	      ("S-<left>" . windmove-left)
+	      ("S-<right>" . windmove-right)
+	      ("S-<up>" . windmove-up)
+	      ("S-<down>" . windmove-down))
   :init
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
   :custom
   (eat-kill-buffer-on-exit t)
-  (eat-term-name "xterm-256color"))
+  (eat-term-name "xterm-256color")
+  :config
+  (add-to-list 'eat-semi-char-non-bound-keys [M-e]))
 
 (use-package highlight-defined ; highlight defined symbols
   :ensure t
@@ -519,7 +528,12 @@
 
 (use-package dumb-jump ; jump to definition using rg
   :ensure t
-  :hook ((xref-backend-functions . dumb-jump-xref-activate)))
+  :functions dumb-jump-xref-activate
+  :custom
+  (xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (dumb-jump-force-searcher 'rg)
+  :init
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package org ; org mode
   :bind (("C-c a" . org-agenda)
