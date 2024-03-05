@@ -134,7 +134,6 @@
    display-time-mode nil ; Don't show the time in the mode line
    completion-cycle-threshold 1 ; show popup unless only 1 match
    completions-detailed t ; show detailed completions
-   tab-always-indent 'complete ; tab completes
    completion-auto-help t ; show completions help
    completions-group t ; group completions
    )
@@ -816,7 +815,7 @@ targets."
 	  embark-isearch-highlight-indicator))
 
   (defun embark-hide-which-key-indicator (fn &rest args)
-    "Hide the which-key indicator immediately when using the completing-read prompter."
+    "Hide the which-key indicator immediately when using the completing-read."
     (which-key--hide-popup-ignore-command)
     (let ((embark-indicators
            (remq #'embark-which-key-indicator embark-indicators)))
@@ -916,18 +915,19 @@ targets."
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   )
 
-(use-package corfu ; in-buffer completion framework
+(use-package corfu ; in-buffer completion framework (capf is on C-c p p)
   :ensure t
   :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
   :functions (corfu-mode global-corfu-mode)
   :init
   (global-corfu-mode)
-
   (defun corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer."
     (when (local-variable-p 'completion-at-point-functions)
       (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
-                  corfu-popupinfo-delay nil)
+                  corfu-popupinfo-delay nil
+		  tab-always-indent 'complete)
+
       (corfu-mode 1))))
 
 (use-package corfu-popupinfo ; documentation popup
