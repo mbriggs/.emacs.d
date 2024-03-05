@@ -196,6 +196,7 @@
   :hook (after-init . repeat-mode))
 
 (use-package display-line-numbers ; display line numbers
+  :disabled t
   :hook (prog-mode . display-line-numbers-mode)
   :config
   (setq display-line-numbers-width 3))
