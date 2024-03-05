@@ -52,7 +52,8 @@
 	 ("M-e" . consult-buffer)
 	 ("M-s r" . query-replace)
 	 ("M-s R" . query-replace-regexp)
-	 ("M-s s" . isearch-forward))
+	 ("M-s s" . isearch-forward)
+	 ("C-x x e" . erase-buffer))
 
   :config
 
@@ -803,8 +804,8 @@ targets."
                    (if (cdr targets) "…" "")))
 	 (if prefix
              (pcase (lookup-key keymap prefix 'accept-default)
-               ((and (pred keymapp) km) km)
-               (_ (key-binding prefix 'accept-default)))
+	       ((and (pred keymapp) km) km)
+	       (_ (key-binding prefix 'accept-default)))
            keymap)
 	 nil nil t (lambda (binding)
                      (not (string-suffix-p "-argument" (cdr binding))))))))
@@ -822,7 +823,7 @@ targets."
       (apply fn args)))
 
   (advice-add #'embark-completing-read-prompter
-              :around #'embark-hide-which-key-indicator))
+	      :around #'embark-hide-which-key-indicator))
 
 
 
@@ -1063,3 +1064,4 @@ targets."
 
 (provide 'init)
 ;;; init.el ends here
+(put 'erase-buffer 'disabled nil)
