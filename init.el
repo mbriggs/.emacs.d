@@ -495,27 +495,44 @@
   :hook ((prog-mode . format-all-mode)
 	 (format-all-mode . format-all-ensure-formatter))
   :ensure t
-  :custom
-  (format-all-formatters
-   '(("CSS" prettierd)
-     ("HTML+ERB" prettierd)
-     ("HTML" prettierd)
-     ("JavaScript" prettierd)
-     ("JSON" prettierd)
-     ("JSON5" prettierd)
-     ("JSX" prettierd)
-     ("SCSS" prettierd)
-     ("TSX" prettierd)
-     ("Markdown" prettierd)
-     ("Ruby" rubocop)
-     ("Shell" shfmt)
-     ("SQL" pg_format)
-     ("TypeScript" prettierd)
-     ("YAML" prettierd)
-     ("Go" gofmt)
-     ("Svelte" prettierd)
-     ("TOML" prettierd)
-     ("GraphQL" prettierd))))
+  :config
+
+  (setopt format-all-formatters
+	  '(("CSS" prettierd)
+	    ("HTML+ERB" prettierd)
+	    ("HTML" prettierd)
+	    ("JavaScript" prettierd)
+	    ("JSON" prettierd)
+	    ("JSON5" prettierd)
+	    ("JSX" prettierd)
+	    ("SCSS" prettierd)
+	    ("TSX" prettierd)
+	    ("Markdown" prettierd)
+	    ("Ruby" rubocop)
+	    ("Shell" shfmt)
+	    ("SQL" pg_format)
+	    ("TypeScript" prettierd)
+	    ("YAML" prettierd)
+	    ("Go" gofmt)
+	    ("Svelte" prettierd)
+	    ("TOML" prettierd)
+	    ("GraphQL" prettierd)))
+
+  ;; hack up rubocop formatter so --server is set
+  (define-format-all-formatter rubocop
+    (:executable "rubocop")
+    (:install "gem install rubocop:'>=1.4.0'")
+    (:languages "Ruby")
+    (:features)
+    (:format
+     (format-all--buffer-hard-ruby
+      "rubocop" '(0 1) nil nil
+      executable
+      "--server"
+      "--auto-correct"
+      "--format" "quiet"
+      "--stderr"
+      "--stdin" (or (buffer-file-name) (buffer-name))))))
 
 (use-package avy ; jump to thing on screen
   :ensure t
