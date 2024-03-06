@@ -53,7 +53,24 @@
 	 ("M-s r" . query-replace)
 	 ("M-s R" . query-replace-regexp)
 	 ("M-s s" . isearch-forward)
-	 ("C-x x e" . erase-buffer))
+	 ("C-x x e" . erase-buffer)
+	 ("C-M-d" . up-list) ; go to the end of the next sexp
+	 ("<insert>" . nil) ; nope
+	 ("C-z" . nil) ; I have a window manager, thanks!
+	 ("C-x C-z" . nil) ; same idea as above
+	 ("C-x C-c" . nil) ; avoid accidentally exiting Emacs
+	 ("C-x C-c C-c" . #'save-buffers-kill-emacs) ; more cumbersome, less error-prone
+	 ("C-h h" . nil) ; Never show that "hello" file
+	 ("M-c" . #'capitalize-dwim)
+	 ("M-l" . #'downcase-dwim) ; "lower" case
+	 ("M-u" . #'upcase-dwim)
+	 ("C-h u" . #'apropos-user-option)
+	 ("C-h F" . #'apropos-function) ; lower case is `describe-function'
+	 ("C-h V" . #'apropos-variable) ; lower case is `describe-variable'
+	 ("C-h L" . #'apropos-library) ; lower case is `view-lossage'
+	 ("C-h c" . #'describe-char)) ; overrides `describe-key-briefly'
+
+
 
   :config
 
@@ -104,9 +121,7 @@
    ;; modeline info
    line-number-mode t
    column-number-mode t
-   ;; default modes
-   blink-cursor-mode nil
-   ;; ui settings
+   ;; everything else
    x-underline-at-descent-line t ; Prettier underlines
    switch-to-buffer-obey-display-actions t ; Make switching buffers more consistent
    show-trailing-whitespace nil ; By default, don't underline trailing spaces
@@ -116,7 +131,6 @@
    create-lockfiles nil ; Don't create lockfiles
    indent-tabs-mode t ; Use tabs
    tab-width 4 ; Set the tab width to 4
-   inhibit-startup-screen t ; No splash screen
    sentence-end-double-space nil ; Don't require two spaces to end a sentence
    backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))) ; Store backups in a separate directory
    auto-save-file-name-transforms `((".*" ,(concat (expand-file-name "autosave" user-emacs-directory) "/\\1") t)) ; Store autosaves in a separate directory
@@ -125,8 +139,13 @@
    kept-new-versions 6 ; Keep 6 new versions
    version-control t ; Use version control
    auto-save-default t ; Autosave files
+   inhibit-startup-screen t ; No splash screen
    inhibit-startup-message t ; Don't show the startup message
+   inhibit-startup-echo-area-message user-login-name ; dont show the echo message
+   inhibit-splash-screen t ; dont show the splash screen
    initial-major-mode 'emacs-lisp-mode ; Start in elisp mode
+   use-file-dialog nil ; dont use a dialog to ask about unsaved files
+   use-short-answers t ; y or n vs yes and no
    fill-column 85 ; Set the fill column
    uniquify-buffer-name-style 'forward ; Uniquify buffer names
    uniquify-separator ":" ; Uniquify buffer names
@@ -137,6 +156,9 @@
    completions-detailed t ; show detailed completions
    completion-auto-help t ; show completions help
    completions-group t ; group completions
+   help-window-select t ; always select help windows
+   save-interprogram-paste-before-kill t ; clipboard into kill ring
+   set-mark-command-repeat-pop t ; repeat mode for C-u C-SPC
    )
 
   ;; Create the backup and autosave directories if they don't exist
@@ -169,7 +191,12 @@
 
   ;; misc ui settings
   (pixel-scroll-precision-mode)                         ; Smooth scrolling
-  (fset 'yes-or-no-p 'y-or-n-p)                          ; y/n instead of yes/no
+  (delete-selection-mode 1) ; text replaces region
+
+  ;; Make native compilation silent and prune its cache.
+  (when (native-comp-available-p)
+    (setq native-comp-async-report-warnings-errors 'silent) ; Emacs 28 with native compilation
+    (setq native-compile-prune-cache t)) ; Emacs 29
 
   ;; Make right-click do something sensible
   (when (display-graphic-p)
