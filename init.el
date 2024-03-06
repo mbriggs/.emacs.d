@@ -410,25 +410,33 @@
 	 ("C-x g l" . magit-log-buffer-file)
 	 ("C-x g L" . magit-log-all)))
 
-(use-package git-gutter ; show git changes in the fringe
+(use-package git-gutter ; show git changes in buffers
   :ensure t
-  :requires (git-gutter-fringe fringe-helper)
-  :functions global-git-gutter-mode
-  :config
-  ;; (require 'git-gutter-fringe)
-  ;; (require 'git-gutter)
-  (if (fboundp 'fringe-mode) (fringe-mode '4))
+  :hook (prog-mode . git-gutter-mode)
+  :custom
+  (git-gutter:disabled-modes '(org-mode asm-mode image-mode))
+  (git-gutter:update-interval 1)
+  (git-gutter:window-width 2)
+  (git-gutter:ask-p nil))
 
+(use-package git-gutter-fringe ; git gutter in the fringe
+  :diminish git-gutter-mode
+  :after git-gutter
+  :demand fringe-helper
+  :config
+  ;; subtle diff indicators in the fringe
   ;; places the git gutter outside the margins.
   (setq-default fringes-outside-margins t)
   ;; thin fringe bitmaps
-  (define-fringe-bitmap 'git-gutter-fr:added [224]
-    nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:modified [224]
-    nil nil '(center repeated))
-  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
-    nil nil 'bottom)
-  (global-git-gutter-mode))
+  (define-fringe-bitmap 'git-gutter-fr:added
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
+  (define-fringe-bitmap 'git-gutter-fr:modified
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
+  (define-fringe-bitmap 'git-gutter-fr:deleted
+    [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+    nil nil 'center))
 
 (use-package exec-path-from-shell ; path from instanciated shell
   :ensure t
