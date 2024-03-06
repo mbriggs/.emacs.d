@@ -420,6 +420,7 @@
   (git-gutter:ask-p nil))
 
 (use-package git-gutter-fringe ; git gutter in the fringe
+  :ensure t
   :diminish git-gutter-mode
   :after git-gutter
   :demand fringe-helper
