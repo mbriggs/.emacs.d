@@ -214,7 +214,8 @@
   )
 
 (use-package windmove
-  :hook (after-init . windmove-default-keybindings))
+  :hook ((after-init . windmove-default-keybindings)
+	 (after-init . windmove-swap-states-default-keybindings)))
 
 (use-package show-paren ; show matching parens
   :hook (prog-mode . show-paren-mode))
