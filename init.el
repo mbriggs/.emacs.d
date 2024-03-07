@@ -532,6 +532,21 @@
   :ensure t
   :after dired)
 
+(use-package elfeed
+  :ensure t
+  :bind ("C-x f" elfeed))
+
+(use-package elfeed-org
+  :ensure t
+  :after elfeed
+  :defines rmh-elfeed-org-files org-directory
+  :functions elfeed-org
+  :config
+  (require 'org)
+  (setq rmh-elfeed-org-files (list (concat org-directory "/elfeed.org")))
+  (elfeed-org))
+
+
 (use-package flymake ; on the fly syntax checking
   :hook (prog-mode . flymake-mode))
 
@@ -1152,7 +1167,7 @@ targets."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(trashed dired-subtree diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(elfeed-org elfeed mpv trashed dired-subtree diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

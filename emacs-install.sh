@@ -13,6 +13,10 @@ echo "install ctags"
 brew install universal-ctags
 echo "installing fonts"
 cp ./font/*.ttf ~/Library/Fonts
+echo "installing mpv"
+brew install mpv
+echo "installing curl"
+brew install curl
 echo "installing lsp servers"
 . ./lsps.sh
 echo "installing formatters"
