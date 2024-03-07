@@ -780,7 +780,9 @@
     (message "All treesit languages installed")))
 
 (use-package markdown-mode ; markdown mode
-  :ensure t)
+  :ensure t
+  :custom
+  (markdown-fontify-code-blocks-natively t))
 
 (use-package web-mode ; web mode for erb
   :ensure t
@@ -1005,10 +1007,18 @@ targets."
   ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   )
 
-(use-package corfu ; in-buffer completion framework (capf is on C-c p p)
+(use-package eldoc ; docs in echo area
+  :hook (prog-mode . eldoc-mode))
+
+(use-package so-long ; disable fancy things in buffers with giant lines
+  :hook (after-init . global-so-long-mode))
+
+(use-package corfu ; in-buffer completion framework (tab complete)
   :ensure t
   :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
   :functions (corfu-mode global-corfu-mode)
+  :custom
+  (tab-always-indent 'complete)
   :init
   (global-corfu-mode)
   (defun corfu-enable-in-minibuffer ()
