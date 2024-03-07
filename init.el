@@ -447,6 +447,14 @@
   (setopt exec-path-from-shell-arguments nil)
   (exec-path-from-shell-initialize))
 
+(use-package proced ; something like top
+  :custom
+  (proced-auto-update-flag t)
+  (proced-enable-color-flag t)
+  (proced-auto-update-interval 5)
+  (proced-descend t)
+  (proced-filter 'user))
+
 (use-package wgrep ; edit grep results
   :ensure t)
 
