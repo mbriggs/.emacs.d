@@ -481,15 +481,41 @@
 
 (use-package dired ; file manager
   :defer t
-  :hook (buffer-list-update . (lambda ()
-				(when (equal major-mode 'dired-mode)
-				  (revert-buffer t t t))))
+  :hook ((dired-mode . dired-hide-details-mode)
+	 (buffer-list-update . (lambda ()
+				 (when (equal major-mode 'dired-mode)
+				   (revert-buffer t t t)))))
+  :custom
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  (dired-dwim-target t)
+  (delete-by-moving-to-trash t)
   :config
   (when (eq system-type 'darwin)
     (setq
      dired-use-ls-dired t
      insert-directory-program "gls"
-     dired-listing-switches "-aBhl --group-directories-first")))
+     dired-listing-switches "-AGFBhl --group-directories-first --time-style=long-iso")))
+
+(use-package dired-subtree ; expand in place
+  :ensure t
+  :after dired
+  :custom
+  (dired-subtree-use-backgrounds nil)
+  :bind (:map dired-mode-map
+	      ("<tab>" . dired-subtree-toggle)
+	      ("<backtab>" . dired-subtree-remove)
+	      ("C-M-u" . dired-subtree-up)
+	      ("C-M-d" . dired-subtree-down)
+	      ("C-M-f" . dired-subtree-next-sibling)
+	      ("C-M-b" . dired-subtree-previous-sibling)))
+
+(use-package wdired ; writable dired
+  :ensure t
+  :after dired)
+
+(use-package trashed ; trash editor
+  :ensure t)
 
 (use-package dired-x ; dired extensions
   :after dired
@@ -1116,7 +1142,7 @@ targets."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(trashed dired-subtree diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
