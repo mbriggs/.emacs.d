@@ -1157,7 +1157,13 @@ targets."
 
 (use-package minitest ; minitest mode
   :ensure t
-  :commands minitest-mode)
+  :commands minitest-mode
+  :defines minitest-mode-map
+  :bind (:map minitest-mode-map
+	      ("C-c t t" . minitest-verify-single)
+	      ("C-c t a" . minitest-verify)
+	      ("C-c t s" . minitest-verify-all)
+	      ("C-c t ;" . minitest-rerun)))
 
 (use-package yard-mode ; yard mode for ruby
   :ensure t

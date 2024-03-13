@@ -1,8 +1,14 @@
-;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8; mode: lisp-data -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Emacs Configs (TODO)"
+(("org-refile-last-stored"
+ (filename . "~/Documents/org/logbook.org")
+ (front-context-string . "** Jarred Sync  ")
+ (rear-context-string . "\n- yarn related\n")
+ (position . 567)
+ (last-modified 26088 52249 368434 0))
+("Emacs Configs (TODO)"
  (filename . "~/.emacs.d/TODO.md")
  (front-context-string . " Eglot\n - workin")
  (rear-context-string)
