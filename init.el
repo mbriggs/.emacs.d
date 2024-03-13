@@ -224,6 +224,8 @@
   :hook (after-init . repeat-mode))
 
 (use-package compile
+  :bind (("M-<right>" . next-error)
+	 ("M-<left>" . previous-error))
   :custom
   (compilation-scroll-output t))
 
