@@ -223,6 +223,10 @@
 (use-package repeat ; repeat common commands with a single key
   :hook (after-init . repeat-mode))
 
+(use-package compile
+  :custom
+  (compilation-scroll-output t))
+
 (use-package display-line-numbers ; display line numbers
   :disabled t
   :hook (prog-mode . display-line-numbers-mode)
