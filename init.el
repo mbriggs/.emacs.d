@@ -69,9 +69,6 @@
 	 ("C-h V" . #'apropos-variable) ; lower case is `describe-variable'
 	 ("C-h L" . #'apropos-library) ; lower case is `view-lossage'
 	 ("C-h c" . #'describe-char)) ; overrides `describe-key-briefly'
-
-
-
   :config
 
   ;; Mac uses cmd as meta
@@ -540,7 +537,7 @@
 
 (use-package elfeed
   :ensure t
-  :bind ("C-x f" elfeed))
+  :bind (("C-x f" . elfeed)))
 
 (use-package elfeed-org
   :ensure t
@@ -566,7 +563,7 @@
   :hook
   ((ruby-ts-mode . eglot-ensure)
    (yaml-ts-mode . eglot-ensure)
-   (typescript-ts-mode .eglot-ensure)
+   (typescript-ts-mode . eglot-ensure)
    (js-ts-mode . eglot-ensure)
    (web-mode . eglot-ensure)
    (bash-ts-mode . eglot-ensure)
@@ -580,37 +577,36 @@
 
   :custom
   (eglot-send-changes-idle-time 0.1)
-  (eglot-extend-to-xref t)              ; activate Eglot in referenced non-project files
-  )
+  (eglot-extend-to-xref t))
 
 (use-package format-all ; format code on save
   :commands format-all-mode
   :hook ((prog-mode . format-all-mode)
 	 (format-all-mode . format-all-ensure-formatter))
   :ensure t
+  :custom
+  (format-all-formatters
+   '(("CSS" prettierd)
+     ("HTML+ERB" prettierd)
+     ("HTML" prettierd)
+     ("JavaScript" prettierd)
+     ("JSON" prettierd)
+     ("JSON5" prettierd)
+     ("JSX" prettierd)
+     ("SCSS" prettierd)
+     ("TSX" prettierd)
+     ("Markdown" prettierd)
+     ("Ruby" rubocop)
+     ("Shell" shfmt)
+     ("SQL" pg_format)
+     ("TypeScript" prettierd)
+     ("YAML" prettierd)
+     ("Go" gofmt)
+     ("Svelte" prettierd)
+     ("TOML" prettierd)
+     ("GraphQL" prettierd)))
+
   :config
-
-  (setopt format-all-formatters
-	  '(("CSS" prettierd)
-	    ("HTML+ERB" prettierd)
-	    ("HTML" prettierd)
-	    ("JavaScript" prettierd)
-	    ("JSON" prettierd)
-	    ("JSON5" prettierd)
-	    ("JSX" prettierd)
-	    ("SCSS" prettierd)
-	    ("TSX" prettierd)
-	    ("Markdown" prettierd)
-	    ("Ruby" rubocop)
-	    ("Shell" shfmt)
-	    ("SQL" pg_format)
-	    ("TypeScript" prettierd)
-	    ("YAML" prettierd)
-	    ("Go" gofmt)
-	    ("Svelte" prettierd)
-	    ("TOML" prettierd)
-	    ("GraphQL" prettierd)))
-
   ;; hack up rubocop formatter so --server is set
   (define-format-all-formatter rubocop
     (:executable "rubocop")
