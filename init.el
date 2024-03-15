@@ -336,14 +336,15 @@
 (use-package eat ; use eshell for most stuff, eat for tui style
   :ensure t
   :functions eat-eshell-mode eat-eshell-visual-command-mode
-  :defines eat-mode-map eat-semi-char-non-bound-keys
+  :defines eat-mode-map eat-semi-char-non-bound-keys eat-semi-char-mode-map
   :commands eat-eshell-mode eat-eshell-visual-command-mode
   :bind (:map eat-mode-map
-	      ("M-e" . consult-buffer)
 	      ("S-<left>" . windmove-left)
 	      ("S-<right>" . windmove-right)
 	      ("S-<up>" . windmove-up)
-	      ("S-<down>" . windmove-down))
+	      ("S-<down>" . windmove-down)
+	      :map eat-semi-char-mode-map
+	      ("M-e" . consult-buffer))
   :init
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
