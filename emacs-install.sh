@@ -17,6 +17,8 @@ echo "installing mpv"
 brew install mpv
 echo "installing curl"
 brew install curl
+echo "installing mermaid cli"
+npm install -g @mermaid-js/mermaid-cli
 echo "installing lsp servers"
 . ./lsps.sh
 echo "installing formatters"

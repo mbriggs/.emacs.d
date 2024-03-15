@@ -663,6 +663,9 @@
   (org-directory (expand-file-name "~/Documents/org"))
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-return-follows-link t)
+  (org-babel-load-languages '((emacs-lisp . t)
+			      (ruby-ts . t)
+			      (mermaid . t)))
   :config
   (setopt org-agenda-files (list org-directory))
   (defun mb--auto-update-org-tags ()
@@ -711,6 +714,13 @@
 					(,weekly ,now))
 				       ("p" "Planning"
 					(,weekly ,now ,pending ,pending-discuss ))))))
+
+(use-package ox-md
+  :after org)
+
+(use-package ob-mermaid
+  :ensure t
+  :after org)
 
 (use-package org-ql
   :requires org
@@ -1179,7 +1189,7 @@ targets."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files nil)
  '(package-selected-packages
-   '(elfeed-org elfeed mpv trashed dired-subtree diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
+   '(fireplace ob-mermaid elfeed-org elfeed mpv trashed dired-subtree diredfl dumb-jump avy org-ql tempel org-journal gptel yaml poly-erb gcmh benchmark-init dired-rainbow dired-narrow dired-hacks nerd-icons-dired dirvish diredful corfu-popupinfo vertico-directory consult direx expreg surround emacs-surround robe-mode robe magit-todos git-link inf-ruby git-timemachine jist feature-mode highlight-defined highlight-defined-mode yaml-mode doom-modeline mini-modeline jsonrpc vertico mmm-mode derived auto-dark eat whole-line-or-region flymake-popon exec-path-from-shell format-all editorconfig s web-mode treesit-auto kind-icon corfu-terminal cape corfu wgrep embark-consult embark marginalia which-key orderless catppuccin-theme)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
