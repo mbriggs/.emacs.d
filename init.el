@@ -221,8 +221,6 @@
   :hook (after-init . repeat-mode))
 
 (use-package compile
-  :bind (("M-<right>" . next-error)
-	 ("M-<left>" . previous-error))
   :custom
   (compilation-scroll-output t))
 
@@ -1042,12 +1040,18 @@ targets."
 
 (use-package corfu ; in-buffer completion framework (tab complete)
   :ensure t
-  :hook ((minibuffer-setup . corfu-enable-in-minibuffer))
+  :hook ((minibuffer-setup . corfu-enable-in-minibuffer)
+	 (go-mode . corfu-enable-auto)
+	 (go-ts-mode . corfu-enable-auto))
   :functions (corfu-mode global-corfu-mode)
   :custom
   (tab-always-indent 'complete)
   :init
   (global-corfu-mode)
+  (defun corfu-enable-auto ()
+    "enable auto complete but only for the current buffer"
+    (setq-local corfu-auto t))
+
   (defun corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer."
     (when (local-variable-p 'completion-at-point-functions)
