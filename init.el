@@ -664,7 +664,6 @@
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-return-follows-link t)
   (org-babel-load-languages '((emacs-lisp . t)
-			      (ruby-ts . t)
 			      (mermaid . t)))
   :config
   (setopt org-agenda-files (list org-directory))
