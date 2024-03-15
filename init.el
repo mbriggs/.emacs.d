@@ -126,8 +126,8 @@
    mouse-wheel-tilt-scroll t ; Enable horizontal scrolling
    mouse-wheel-flip-direction t ; Natural scrolling
    create-lockfiles nil ; Don't create lockfiles
-   indent-tabs-mode t ; Use tabs
-   tab-width 4 ; Set the tab width to 4
+   indent-tabs-mode nil ; don't use tabs
+   tab-width 2 ; Set the tab width to 2
    sentence-end-double-space nil ; Don't require two spaces to end a sentence
    backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))) ; Store backups in a separate directory
    auto-save-file-name-transforms `((".*" ,(concat (expand-file-name "autosave" user-emacs-directory) "/\\1") t)) ; Store autosaves in a separate directory
