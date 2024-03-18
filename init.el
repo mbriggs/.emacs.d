@@ -582,29 +582,27 @@
   :hook ((prog-mode . format-all-mode)
 	 (format-all-mode . format-all-ensure-formatter))
   :ensure t
-  :custom
-  (format-all-formatters
-   '(("CSS" prettierd)
-     ("HTML+ERB" prettierd)
-     ("HTML" prettierd)
-     ("JavaScript" prettierd)
-     ("JSON" prettierd)
-     ("JSON5" prettierd)
-     ("JSX" prettierd)
-     ("SCSS" prettierd)
-     ("TSX" prettierd)
-     ("Markdown" prettierd)
-     ("Ruby" rubocop)
-     ("Shell" shfmt)
-     ("SQL" pg_format)
-     ("TypeScript" prettierd)
-     ("YAML" prettierd)
-     ("Go" gofmt)
-     ("Svelte" prettierd)
-     ("TOML" prettierd)
-     ("GraphQL" prettierd)))
-
   :config
+  (setq-default format-all-formatters
+		'(("CSS" prettierd)
+		  ("HTML" prettierd)
+		  ("JavaScript" prettierd)
+		  ("JSON" prettierd)
+		  ("JSON5" prettierd)
+		  ("JSX" prettierd)
+		  ("SCSS" prettierd)
+		  ("TSX" prettierd)
+		  ("Markdown" prettierd)
+		  ("Ruby" rubocop)
+		  ("Shell" shfmt)
+		  ("SQL" pg_format)
+		  ("TypeScript" prettierd)
+		  ("YAML" prettierd)
+		  ("Go" gofmt)
+		  ("Svelte" prettierd)
+		  ("TOML" prettierd)
+		  ("GraphQL" prettierd)))
+
   ;; hack up rubocop formatter so --server is set
   (define-format-all-formatter rubocop
     (:executable "rubocop")
