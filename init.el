@@ -535,8 +535,7 @@
   :after dired)
 
 (use-package elfeed
-  :ensure t
-  :bind (("C-x f" . elfeed)))
+  :ensure t)
 
 (use-package elfeed-org
   :ensure t
