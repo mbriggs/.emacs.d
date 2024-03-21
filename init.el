@@ -575,53 +575,13 @@
    (cmake-ts-mode . eglot-ensure)
    (go-ts-mode . eglot-ensure)
    (dockerfile-ts-mode . eglot-ensure))
-
+  :bind
+  (:map eglot-mode-map
+	("C-x f" . eglot-format-buffer))
 
   :custom
   (eglot-send-changes-idle-time 0.1)
   (eglot-extend-to-xref t))
-
-(use-package format-all ; format code on save
-  :commands format-all-mode
-  :hook ((prog-mode . format-all-mode)
-	 (format-all-mode . format-all-ensure-formatter))
-  :ensure t
-  :config
-  (setq-default format-all-formatters
-		'(("CSS" prettierd)
-		  ("HTML" prettierd)
-		  ("JavaScript" prettierd)
-		  ("JSON" prettierd)
-		  ("JSON5" prettierd)
-		  ("JSX" prettierd)
-		  ("SCSS" prettierd)
-		  ("TSX" prettierd)
-		  ("Markdown" prettierd)
-		  ("Ruby" rubocop)
-		  ("Shell" shfmt)
-		  ("SQL" pg_format)
-		  ("TypeScript" prettierd)
-		  ("YAML" prettierd)
-		  ("Go" gofmt)
-		  ("Svelte" prettierd)
-		  ("TOML" prettierd)
-		  ("GraphQL" prettierd)))
-
-  ;; hack up rubocop formatter so --server is set
-  (define-format-all-formatter rubocop
-    (:executable "rubocop")
-    (:install "gem install rubocop:'>=1.4.0'")
-    (:languages "Ruby")
-    (:features)
-    (:format
-     (format-all--buffer-hard-ruby
-      "rubocop" '(0 1) nil nil
-      executable
-      "--server"
-      "--auto-correct"
-      "--format" "quiet"
-      "--stderr"
-      "--stdin" (or (buffer-file-name) (buffer-name))))))
 
 (use-package avy ; jump to thing on screen
   :ensure t
@@ -1006,7 +966,9 @@
   :ensure t
   :hook ((minibuffer-setup . corfu-enable-in-minibuffer)
 	 (go-mode . corfu-enable-auto)
-	 (go-ts-mode . corfu-enable-auto))
+	 (go-ts-mode . corfu-enable-auto)
+         (typescript-ts-mode . corfu-enable-auto)
+         (tsx-ts-mode . corfu-enable-auto))
   :functions (corfu-mode global-corfu-mode)
   :custom
   (tab-always-indent 'complete)
