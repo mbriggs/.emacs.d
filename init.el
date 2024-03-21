@@ -17,7 +17,7 @@
   (package-initialize))
 
 (use-package benchmark-init ; benchmarking, enable to benchmark init
-  ;; :disabled
+  :disabled
   :ensure t
   :config
   ;; To disable collection of benchmark data after init is done.
@@ -564,20 +564,25 @@
   :requires jsonrpc
   :hook
   ((ruby-ts-mode . eglot-ensure)
-   (yaml-ts-mode . eglot-ensure)
-   (typescript-ts-mode . eglot-ensure)
-   (js-ts-mode . eglot-ensure)
-   (web-mode . eglot-ensure)
-   (bash-ts-mode . eglot-ensure)
-   (html-ts-mode . eglot-ensure)
-   (css-ts-mode . eglot-ensure)
-   (json-ts-mode . eglot-ensure)
-   (cmake-ts-mode . eglot-ensure)
-   (go-ts-mode . eglot-ensure)
-   (dockerfile-ts-mode . eglot-ensure))
+    (yaml-ts-mode . eglot-ensure)
+    (typescript-ts-mode . eglot-ensure)
+    (js-ts-mode . eglot-ensure)
+    (web-mode . eglot-ensure)
+    (bash-ts-mode . eglot-ensure)
+    (html-ts-mode . eglot-ensure)
+    (css-ts-mode . eglot-ensure)
+    (json-ts-mode . eglot-ensure)
+    (cmake-ts-mode . eglot-ensure)
+    (go-ts-mode . eglot-ensure)
+    (dockerfile-ts-mode . eglot-ensure))
   :bind
   (:map eglot-mode-map
-	("C-x f" . eglot-format-buffer))
+	  ("C-x f" . eglot-format-buffer)
+    ("C-x l a" . eglot-code-actions)
+    ("C-x l r" . eglot-rename)
+    ("C-x l e" . eglot-code-action-extract)
+    ("C-x l i" . eglot-code-action-inline)
+    ("C-x l l" . eglot-code-action-quickfix))
 
   :custom
   (eglot-send-changes-idle-time 0.1)
