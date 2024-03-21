@@ -865,6 +865,7 @@
 
 (use-package embark-consult ; consult integration for embark
   :ensure t
+  :after consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
