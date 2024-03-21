@@ -343,7 +343,8 @@
 	 ("S-<up>" . windmove-up)
 	 ("S-<down>" . windmove-down)
 	 :map eat-semi-char-mode-map
-	 ("M-e" . consult-buffer))
+	 ("M-e" . consult-buffer)
+         ("M-o" . project-find-file))
   :init
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
@@ -469,6 +470,8 @@
    doom-modeline-project-detection 'project
    doom-modeline-buffer-file-name-style 'relative-from-project
    doom-modeline-buffer-state-icon nil
+   doom-modeline-env-version nil
+   doom-modeline-buffer-encoding nil
    )
   (display-time-mode -1)
   (doom-modeline-mode 1))
