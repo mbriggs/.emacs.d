@@ -336,13 +336,14 @@
   :functions eat-eshell-mode eat-eshell-visual-command-mode
   :defines eat-mode-map eat-semi-char-non-bound-keys eat-semi-char-mode-map
   :commands eat-eshell-mode eat-eshell-visual-command-mode
-  :bind (:map eat-mode-map
-	      ("S-<left>" . windmove-left)
-	      ("S-<right>" . windmove-right)
-	      ("S-<up>" . windmove-up)
-	      ("S-<down>" . windmove-down)
-	      :map eat-semi-char-mode-map
-	      ("M-e" . consult-buffer))
+  :bind (("C-x c" . eat)
+	 :map eat-mode-map
+	 ("S-<left>" . windmove-left)
+	 ("S-<right>" . windmove-right)
+	 ("S-<up>" . windmove-up)
+	 ("S-<down>" . windmove-down)
+	 :map eat-semi-char-mode-map
+	 ("M-e" . consult-buffer))
   :init
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
   (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
